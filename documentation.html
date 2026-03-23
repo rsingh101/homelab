@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Documentation | Cybersecurity Homelab</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;700&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">homelab.engineer</div>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="documentation.html" class="active">Documentation</a></li>
+    <li><a href="timeline.html">Build Timeline</a></li>
+    <li><a href="about.html">About</a></li>
+  </ul>
+</nav>
+
+<main>
+  <div class="docs-layout">
+    <!-- Sidebar -->
+    <aside class="docs-sidebar">
+      <div class="docs-nav-title">Documentation</div>
+      <ul class="docs-nav">
+        <li><a href="#" class="active" onclick="showDoc('proxmox',this)">Proxmox Configuration</a></li>
+        <li><a href="#" onclick="showDoc('ubuntu',this)">Ubuntu Server Setup</a></li>
+        <li><a href="#" onclick="showDoc('windows',this)">Windows 11 Deployment</a></li>
+        <li><a href="#" onclick="showDoc('ad',this)">Active Directory</a></li>
+        <li><a href="#" onclick="showDoc('network',this)">Network Segmentation</a></li>
+        <li><a href="#" onclick="showDoc('raspi',this)">Raspberry Pi Sensors</a></li>
+        <li><a href="#" onclick="showDoc('kali',this)">Kali Linux Environment</a></li>
+        <li><a href="#" onclick="showDoc('siem',this)">SIEM &amp; Detection</a></li>
+      </ul>
+    </aside>
+
+    <!-- Content -->
+    <main class="doc-content">
+
+      <!-- PROXMOX -->
+      <div id="doc-proxmox" class="doc-page active">
+        <div class="doc-header">
+          <div class="doc-breadcrumb">Documentation / Virtualization</div>
+          <div class="doc-title">Proxmox Configuration</div>
+          <div class="doc-meta">
+            <span>✓ Completed</span>
+            <span>Category: Virtualization</span>
+            <span>Updated: March 2026</span>
+          </div>
+        </div>
+
+        <div class="doc-section">
+          <h3>Purpose</h3>
+          <p>Proxmox VE serves as the bare-metal hypervisor backbone of the homelab. It hosts all virtual machines and provides the centralized management interface for resource allocation, VM lifecycle management, and storage pooling. This layer is the foundation that makes the entire SOC simulation environment portable and reproducible.</p>
+        </div>
+
+        <div class="doc-section">
+          <h3>Architecture</h3>
+          <table class="spec-table">
+            <tr><th>Component</th><th>Detail</th><th>Status</th></tr>
+            <tr><td>Hypervisor</td><td>Proxmox VE (KVM-based)</td><td><span class="tag tag-green">Online</span></td></tr>
+            <tr><td>Storage Pool</td><td>Local LVM + ZFS</td><td><span class="tag tag-green">Online</span></td></tr>
+            <tr><td>Network Bridge</td><td>vmbr0 (LAN), vmbr1 (isolated SOC)</td><td><span class="tag tag-green">Online</span></td></tr>
+            <tr><td>VM Count</td><td>4 active VMs</td><td><span class="tag tag-blue">Running</span></td></tr>
+          </table>
+        </div>
+
+        <div class="doc-section">
+          <h3>Steps Taken</h3>
+          <p>1. Downloaded Proxmox VE ISO from the official repository and created a bootable USB via Rufus. Installed on dedicated hardware with EFI boot enabled.</p>
+          <p>2. Configured network bridges to segment lab traffic from the host LAN. Created <code>vmbr1</code> as an isolated internal bridge for SOC VM communications.</p>
+          <div class="code-block">
+            <span class="code-label">bash</span>
+<span class="comment"># /etc/network/interfaces — Proxmox bridge config</span>
+auto vmbr0
+iface vmbr0 inet static
+  address  <span class="val">192.168.1.100/24</span>
+  gateway  <span class="val">192.168.1.1</span>
+  bridge-ports <span class="key">eno1</span>
+  bridge-stp off
+  bridge-fd 0
+
+auto vmbr1
+iface vmbr1 inet static
+  address  <span class="val">10.10.10.1/24</span>
+  bridge-ports <span class="key">none</span>
+  bridge-stp off
+  bridge-fd 0
+          </div>
+          <p>3. Enabled Proxmox SPICE and VNC console access for headless VM management. Configured storage pools for ISO storage and VM disk images.</p>
+        </div>
+
+        <div class="doc-section">
+          <h3>Lessons Learned</h3>
+          <p>Properly planning network bridge topology before deploying VMs saves significant reconfiguration effort. The isolated <code>vmbr1</code> bridge is critical for ensuring SOC telemetry doesn't leak onto the production LAN. Always allocate more RAM than initially estimated — SIEM workloads are memory intensive.</p>
+          <div class="info-box">Proxmox's web UI provides adequate management for this lab scale, but consider Terraform + Proxmox provider for future automated VM provisioning as the lab expands.</div>
+        </div>
+      </div>
+
+      <!-- UBUNTU -->
+      <div id="doc-ubuntu" class="doc-page">
+        <div class="doc-header">
+          <div class="doc-breadcrumb">Documentation / SOC Infrastructure</div>
+          <div class="doc-title">Ubuntu Server Setup</div>
+          <div class="doc-meta">
+            <span>✓ Completed</span>
+            <span>Category: SOC Backbone</span>
+            <span>Updated: March 2026</span>
+          </div>
+        </div>
+        <div class="doc-section">
+          <h3>Purpose</h3>
+          <p>The Ubuntu Server VM acts as the central SOC backbone — the aggregation point for telemetry from all other nodes. It is designed to eventually run the full Wazuh + Elastic Stack SIEM pipeline. Currently it serves as the log aggregation and management server.</p>
+        </div>
+        <div class="doc-section">
+          <h3>Architecture</h3>
+          <table class="spec-table">
+            <tr><th>Component</th><th>Detail</th><th>Status</th></tr>
+            <tr><td>OS</td><td>Ubuntu Server 22.04 LTS</td><td><span class="tag tag-green">Online</span></td></tr>
+            <tr><td>vCPUs</td><td>4 cores</td><td><span class="tag tag-green">Running</span></td></tr>
+            <tr><td>RAM</td><td>8 GB</td><td><span class="tag tag-green">Running</span></td></tr>
+            <tr><td>Network</td><td>vmbr1 (10.10.10.10)</td><td><span class="tag tag-green">Online</span></td></tr>
+            <tr><td>Wazuh Manager</td><td>Planned deployment</td><td><span class="tag tag-gray">Planned</span></td></tr>
+          </table>
+        </div>
+        <div class="doc-section">
+          <h3>Steps Taken</h3>
+          <p>Deployed Ubuntu Server 22.04 LTS as a Proxmox VM with a static IP on the isolated SOC bridge. Hardened the SSH configuration and configured UFW firewall rules to allow only necessary inbound traffic.</p>
+          <div class="code-block">
+            <span class="code-label">bash</span>
+<span class="comment"># UFW firewall baseline</span>
+<span class="cmd">sudo</span> ufw default deny incoming
+<span class="cmd">sudo</span> ufw default allow outgoing
+<span class="cmd">sudo</span> ufw allow from <span class="val">10.10.10.0/24</span> to any port <span class="val">22</span>
+<span class="cmd">sudo</span> ufw allow <span class="val">9200/tcp</span>   <span class="comment"># Elasticsearch</span>
+<span class="cmd">sudo</span> ufw allow <span class="val">1514/tcp</span>   <span class="comment"># Wazuh agent</span>
+<span class="cmd">sudo</span> ufw enable
+          </div>
+          <p>Configured NTP synchronization across all lab VMs to ensure log timestamp consistency — critical for accurate SIEM correlation.</p>
+        </div>
+        <div class="doc-section">
+          <h3>Lessons Learned</h3>
+          <p>Time synchronization between all lab nodes is not optional — misaligned timestamps make log correlation nearly impossible. NTP should be configured as a first step on every new VM deployment, not an afterthought.</p>
+        </div>
+      </div>
+
+      <!-- WINDOWS -->
+      <div id="doc-windows" class="doc-page">
+        <div class="doc-header">
+          <div class="doc-breadcrumb">Documentation / Endpoints</div>
+          <div class="doc-title">Windows 11 Deployment</div>
+          <div class="doc-meta">
+            <span class="tag tag-orange">In Progress</span>
+            <span>Category: Endpoint Telemetry</span>
+            <span>Updated: March 2026</span>
+          </div>
+        </div>
+        <div class="doc-section">
+          <h3>Purpose</h3>
+          <p>Two Windows 11 VMs act as enterprise endpoint simulations. The primary goal is rich endpoint telemetry via Sysmon, providing visibility into process creation, network connections, file operations, and registry changes — the raw material for detection engineering.</p>
+        </div>
+        <div class="doc-section">
+          <h3>Architecture</h3>
+          <table class="spec-table">
+            <tr><th>Component</th><th>Detail</th><th>Status</th></tr>
+            <tr><td>OS</td><td>Windows 11 Pro (x2 VMs)</td><td><span class="tag tag-orange">In Progress</span></td></tr>
+            <tr><td>Sysmon</td><td>SwiftOnSecurity config</td><td><span class="tag tag-orange">Configuring</span></td></tr>
+            <tr><td>Domain Join</td><td>lab.local</td><td><span class="tag tag-gray">Planned</span></td></tr>
+            <tr><td>Wazuh Agent</td><td>v4.x</td><td><span class="tag tag-gray">Planned</span></td></tr>
+          </table>
+        </div>
+        <div class="doc-section">
+          <h3>Sysmon Configuration</h3>
+          <p>Sysmon is deployed with the community-maintained SwiftOnSecurity configuration, which provides broad detection coverage while filtering known-good noise. Key event IDs being captured:</p>
+          <div class="code-block">
+            <span class="code-label">powershell</span>
+<span class="comment"># Install Sysmon with config</span>
+<span class="cmd">.\Sysmon64.exe</span> -accepteula -i <span class="val">sysmonconfig-export.xml</span>
+
+<span class="comment"># Verify Sysmon service</span>
+<span class="cmd">Get-Service</span> Sysmon64
+
+<span class="comment"># Key Event IDs monitored:</span>
+<span class="comment"># EID 1  - Process Creation</span>
+<span class="comment"># EID 3  - Network Connection</span>
+<span class="comment"># EID 11 - File Create</span>
+<span class="comment"># EID 13 - Registry Value Set</span>
+<span class="comment"># EID 22 - DNS Query</span>
+          </div>
+        </div>
+        <div class="doc-section">
+          <h3>Lessons Learned</h3>
+          <p>Sysmon without a properly tuned configuration generates overwhelming noise. Start with the SwiftOnSecurity base config and iterate — suppressing known-good processes first before adding detection rules. The quality of endpoint telemetry directly determines detection fidelity downstream in the SIEM.</p>
+        </div>
+      </div>
+
+      <!-- AD -->
+      <div id="doc-ad" class="doc-page">
+        <div class="doc-header">
+          <div class="doc-breadcrumb">Documentation / Identity</div>
+          <div class="doc-title">Active Directory Integration</div>
+          <div class="doc-meta">
+            <span class="tag tag-gray" style="font-size:11px">⧖ Pending</span>
+            <span>Category: Identity &amp; Access</span>
+            <span>Updated: March 2026</span>
+          </div>
+        </div>
+        <div class="doc-section">
+          <h3>Purpose</h3>
+          <p>Windows Server running Active Directory Domain Services (AD DS) will simulate an enterprise identity layer. Once deployed, it will enable realistic authentication event logging, Group Policy enforcement, and Kerberos-based attack simulation — all fundamental to SOC analyst training and detection engineering. This is the next major VM deployment milestone after Windows 11 is finalized.</p>
+        </div>
+        <div class="doc-section">
+          <h3>Planned Architecture</h3>
+          <table class="spec-table">
+            <tr><th>Component</th><th>Detail</th><th>Status</th></tr>
+            <tr><td>OS</td><td>Windows Server 2022</td><td><span class="tag tag-gray">Pending</span></td></tr>
+            <tr><td>Domain</td><td>lab.local</td><td><span class="tag tag-gray">Pending</span></td></tr>
+            <tr><td>Forest Functional Level</td><td>Windows Server 2016</td><td><span class="tag tag-gray">Pending</span></td></tr>
+            <tr><td>DNS</td><td>Integrated AD DNS</td><td><span class="tag tag-gray">Pending</span></td></tr>
+          </table>
+        </div>
+        <div class="doc-section">
+          <h3>Planned Audit Configuration</h3>
+          <p>Once deployed, critical audit policies will be enabled via auditpol to ensure authentication events, directory access, and privilege use are all captured for SIEM ingestion.</p>
+          <div class="code-block">
+            <span class="code-label">cmd — planned</span>
+<span class="comment"># Planned: enable critical audit policies via auditpol</span>
+<span class="cmd">auditpol</span> /set /subcategory:<span class="val">"Logon"</span> /success:enable /failure:enable
+<span class="cmd">auditpol</span> /set /subcategory:<span class="val">"Account Logon"</span> /success:enable /failure:enable
+<span class="cmd">auditpol</span> /set /subcategory:<span class="val">"Directory Service Access"</span> /success:enable /failure:enable
+<span class="cmd">auditpol</span> /set /subcategory:<span class="val">"Privilege Use"</span> /success:enable /failure:enable
+          </div>
+          <div class="info-box">Event IDs 4624, 4625, 4768, 4769, and 4776 are the most critical for detecting authentication-based attacks such as Pass-the-Hash, Kerberoasting, and brute force attempts. This page will be updated with full steps and lessons learned as deployment progresses.</div>
+        </div>
+        <div class="doc-section">
+          <h3>Next Steps</h3>
+          <p>Active Directory is the next major pending milestone. Planned sequence: Windows 11 finalized → Windows Server 2022 promoted to DC → endpoints domain-joined → Wazuh agent deployed for AD event forwarding to the Ubuntu SOC VM.</p>
+        </div>
+      </div>
+
+      <!-- NETWORK -->
+      <div id="doc-network" class="doc-page">
+        <div class="doc-header">
+          <div class="doc-breadcrumb">Documentation / Network</div>
+          <div class="doc-title">Network Segmentation &amp; Routing</div>
+          <div class="doc-meta">
+            <span>✓ Completed</span>
+            <span>Category: Infrastructure</span>
+            <span>Updated: March 2026</span>
+          </div>
+        </div>
+        <div class="doc-section">
+          <h3>Purpose</h3>
+          <p>The physical network is entirely wireless — all devices connect through the ASUS router. The lab achieves isolation from the home network via a double-NAT boundary enforced by the Raspberry Pi 3B WAN bridge, not through VLANs or managed switches. This is a deliberate design that demonstrates how strong isolation can be achieved with minimal hardware using sound Linux networking fundamentals.</p>
+        </div>
+        <div class="doc-section">
+          <h3>Full Traffic Flow</h3>
+          <div class="code-block">
+            <span class="code-label">topology</span>
+[ Home Network: <span class="val">10.0.0.0/24</span> ]
+  │
+  │  Wi-Fi upstream (wlan0: 10.0.0.16)
+  ▼
+[ <span class="key">Raspberry Pi 3B</span> — WAN Bridge ]
+  │  NAT · DHCP · Firewall isolation
+  │  eth0: 192.168.100.2 → downstream
+  ▼
+[ <span class="key">ASUS RT-AX88U</span> — Lab Gateway ]
+  │  WAN: 192.168.100.x (DHCP from Pi)
+  │  LAN: 192.168.50.0/24
+  │
+  ├──── <span class="val">Raspberry Pi 4</span> — Suricata IDS  (all traffic inspected)
+  ├──── <span class="val">Raspberry Pi 4</span> — Cowrie Honeypot
+  └──── <span class="key">Proxmox Server</span> (Mac Mini — wired for stability)
+          │  vmbr0 → 192.168.50.x (ASUS LAN)
+          ├── Ubuntu SOC VM    (<span class="val">Wazuh + Elastic — planned</span>)
+          ├── Windows 11 VM    (<span class="val">Sysmon + Wazuh agent — in progress</span>)
+          ├── Kali Linux VM    (<span class="val">Attacker node</span>)
+          └── Windows Server   (<span class="val">AD Domain Controller — pending</span>)
+          </div>
+        </div>
+        <div class="doc-section">
+          <h3>Isolation Validation</h3>
+          <table class="spec-table">
+            <tr><th>Test</th><th>Result</th></tr>
+            <tr><td>ping 8.8.8.8 from lab device</td><td><span class="tag tag-green">Success — internet works</span></td></tr>
+            <tr><td>ping 10.0.0.1 (home router) from lab</td><td><span class="tag tag-green">Blocked — isolation confirmed</span></td></tr>
+            <tr><td>ping 10.0.0.16 (Pi wlan0) from lab</td><td><span class="tag tag-green">Blocked — isolation confirmed</span></td></tr>
+            <tr><td>DNS resolution from lab</td><td><span class="tag tag-green">Working — 8.8.8.8 via Pi NAT</span></td></tr>
+          </table>
+        </div>
+        <div class="doc-section">
+          <h3>Lessons Learned</h3>
+          <p>Both INPUT and FORWARD rules are required for complete isolation — FORWARD alone allows traffic through even if the Pi itself is unreachable. mDNS does not cross NAT boundaries, which eliminated one potential home network leak vector. Running Suricata on a Pi 4 that is also doing routing under load produced zero packet drops — the Pi 4 is a capable gateway IDS for lab-scale traffic.</p>
+        </div>
+      </div>
+
+      <!-- RASPI -->
+      <div id="doc-raspi" class="doc-page">
+        <div class="doc-header">
+          <div class="doc-breadcrumb">Documentation / Sensors &amp; Network</div>
+          <div class="doc-title">Raspberry Pi Cluster</div>
+          <div class="doc-meta">
+            <span>✓ Completed</span>
+            <span>Category: Sensors · Network Architecture</span>
+            <span>Updated: March 2026</span>
+          </div>
+        </div>
+
+        <div class="doc-section">
+          <h3>Architecture Overview</h3>
+          <p>Three Raspberry Pi units form both the physical network boundary and the sensor layer of the lab. This is not a supplementary add-on — the Pi cluster is the foundation that enables full network isolation, traffic inspection, and deception-based detection before a single packet reaches a VM.</p>
+          <table class="spec-table">
+            <tr><th>Node</th><th>Model</th><th>Role</th><th>Status</th></tr>
+            <tr><td>Pi #1</td><td>Raspberry Pi 3B</td><td>WAN Bridge — Wi-Fi NAT gateway</td><td><span class="tag tag-green">Online</span></td></tr>
+            <tr><td>Pi #2</td><td>Raspberry Pi 4</td><td>Suricata IDS — Gateway sensor</td><td><span class="tag tag-green">Online</span></td></tr>
+            <tr><td>Pi #3</td><td>Raspberry Pi 4</td><td>Cowrie Honeypot — SSH/Telnet deception</td><td><span class="tag tag-green">Online</span></td></tr>
+          </table>
+        </div>
+
+        <div class="doc-section">
+          <h3>Pi #1 — WAN Bridge (Raspberry Pi 3B)</h3>
+          <p>The Pi 3B acts as a custom upstream ISP for the lab — bridging the home Wi-Fi network to the ASUS router WAN port via a double-NAT boundary. This creates complete isolation from the home LAN (10.0.0.0/24) while still allowing internet access inside the lab. The Pi enforces firewall rules at the boundary that prevent any lab device from reaching the home network.</p>
+          <div class="code-block">
+            <span class="code-label">interfaces</span>
+<span class="comment"># Pi 3B network roles</span>
+wlan0 → <span class="val">10.0.0.16</span>       <span class="comment"># upstream: home Wi-Fi</span>
+eth0  → <span class="val">192.168.100.2</span>   <span class="comment"># downstream: ASUS WAN port</span>
+
+<span class="comment"># NAT masquerade — all lab traffic exits via wlan0</span>
+iptables -t nat -A POSTROUTING -o wlan0 -j MASQUERADE
+
+<span class="comment"># Isolation rules — lab devices cannot reach home LAN</span>
+iptables -I FORWARD 1 -i eth0 -o wlan0 -d <span class="val">10.0.0.0/24</span> -j DROP
+iptables -I INPUT  1 -i eth0 -d <span class="val">10.0.0.16</span> -j DROP
+          </div>
+          <div class="info-box">The ASUS router sits behind this Pi and operates on its own LAN subnet (192.168.50.0/24), completely unaware of the home network. This is a real-world ISP-style architecture — the Pi is the upstream provider.</div>
+        </div>
+
+        <div class="doc-section">
+          <h3>Pi #2 — Suricata IDS (Raspberry Pi 4)</h3>
+          <p>A Raspberry Pi 4 runs Suricata in Gateway IDS mode — positioned so that all traffic entering and leaving the lab passes through it. This provides network-level visibility across DNS, HTTP, TLS, flow records, and signature-based alerts before anything reaches the Proxmox VMs.</p>
+          <div class="code-block">
+            <span class="code-label">bash</span>
+<span class="comment"># Validate Suricata config and interface binding</span>
+<span class="cmd">sudo</span> suricata -T -c /etc/suricata/suricata.yaml -i <span class="val">wlan0</span>
+
+<span class="comment"># Run Suricata as Gateway IDS daemon</span>
+<span class="cmd">sudo</span> suricata -c /etc/suricata/suricata.yaml -i <span class="val">wlan0</span> -D
+
+<span class="comment"># Update Emerging Threats ruleset</span>
+<span class="cmd">sudo</span> suricata-update
+<span class="cmd">sudo</span> systemctl restart suricata
+
+<span class="comment"># Output: /var/log/suricata/eve.json (EVE JSON — SIEM-ready)</span>
+          </div>
+          <p>A custom logrotate policy was built to protect the SD card from log growth: daily rotation, 7 compressed archives, and automatic Suricata reload. Performance was validated at 0 packet drops under full lab load.</p>
+          <div class="info-box">EVE JSON output is the industry standard format for SIEM ingestion. When the Wazuh agent is deployed to this Pi, it will tail eve.json and forward structured alerts directly to the Wazuh Manager on the Ubuntu SOC VM.</div>
+        </div>
+
+        <div class="doc-section">
+          <h3>Pi #3 — Cowrie Honeypot (Raspberry Pi 4)</h3>
+          <p>A dedicated Raspberry Pi 4 runs Cowrie, a medium-interaction SSH/Telnet honeypot. Any connection attempt to this node triggers full session recording — capturing commands, credentials, malware downloads, and attacker behavior patterns in JSON format.</p>
+          <div class="code-block">
+            <span class="code-label">bash</span>
+<span class="comment"># Cowrie deployed from source with Python 3.11 (compiled from source)</span>
+<span class="comment"># — Pi OS shipped an incompatible version, resolved by building Python</span>
+<span class="cmd">git clone</span> https://github.com/cowrie/cowrie
+<span class="cmd">cd</span> cowrie
+<span class="cmd">pip install</span> --user -r requirements.txt
+<span class="cmd">cp</span> etc/cowrie.cfg.dist etc/cowrie.cfg
+
+<span class="comment"># Cowrie runs as a systemd service for 24/7 persistence</span>
+<span class="cmd">sudo systemctl</span> enable cowrie
+<span class="cmd">sudo systemctl</span> start cowrie
+
+<span class="comment"># Captures: brute-force attempts, commands, malware, IPs, tools used</span>
+<span class="comment"># Output: JSON logs → forwarded to SIEM pipeline (planned)</span>
+          </div>
+        </div>
+
+        <div class="doc-section">
+          <h3>What This Multi-Sensor Layer Means</h3>
+          <p>Combined, the three Pi nodes create a detection pipeline that operates independently of the VM layer. Suricata sees every network packet; Cowrie captures active attacker behavior; the WAN bridge enforces the isolation boundary that keeps the lab safe. This architecture mirrors how enterprise SOC environments deploy out-of-band network taps and deception technology — and it runs on three $40 devices.</p>
+        </div>
+
+        <div class="doc-section">
+          <h3>Lessons Learned</h3>
+          <p>Suricata must be bound to the correct interface — validating with <code>-T</code> before running live saved significant debugging time. Log rotation is not optional on SD-card-based systems; without it, Suricata will fill the card within days. For Cowrie, Python version conflicts are common on Pi OS — compiling from source is the cleanest fix and demonstrates genuine problem-solving under constraint.</p>
+        </div>
+      </div>
+
+      <!-- KALI -->
+      <div id="doc-kali" class="doc-page">
+        <div class="doc-header">
+          <div class="doc-breadcrumb">Documentation / Attack Simulation</div>
+          <div class="doc-title">Kali Linux Attacker Environment</div>
+          <div class="doc-meta">
+            <span class="tag tag-gray" style="font-size:11px">⧖ Pending</span>
+            <span>Category: Red Team Simulation</span>
+            <span>Updated: March 2026</span>
+          </div>
+        </div>
+        <div class="doc-section">
+          <h3>Purpose</h3>
+          <p>Kali Linux will be deployed as a controlled attacker VM inside Proxmox, isolated from the SOC subnet but capable of targeting lab endpoints. Its role is to generate realistic attack telemetry — enabling testing of detection rules, SIEM alert tuning, and response playbooks in a fully closed environment. Deployment is planned after Active Directory is live so that domain-based attack scenarios can be executed and detected end-to-end.</p>
+        </div>
+        <div class="doc-section">
+          <h3>Planned Attack Scenarios</h3>
+          <table class="spec-table">
+            <tr><th>Scenario</th><th>Tools Planned</th><th>Detection Goal</th><th>Status</th></tr>
+            <tr><td>Port Scanning</td><td>Nmap</td><td>Suricata scan detection rules</td><td><span class="tag tag-gray">Planned</span></td></tr>
+            <tr><td>SSH Brute Force</td><td>Hydra</td><td>Cowrie honeypot capture</td><td><span class="tag tag-gray">Planned</span></td></tr>
+            <tr><td>AD Enumeration</td><td>BloodHound, CrackMapExec</td><td>AD audit event correlation</td><td><span class="tag tag-gray">Requires AD</span></td></tr>
+            <tr><td>Lateral Movement</td><td>Impacket, Mimikatz</td><td>Sysmon EID 1, 3 detection</td><td><span class="tag tag-gray">Requires AD</span></td></tr>
+          </table>
+        </div>
+        <div class="doc-section">
+          <h3>Design Rationale</h3>
+          <p>Sequencing Kali after Active Directory is deliberate. The most valuable attack simulations — Kerberoasting, Pass-the-Hash, lateral movement — require a domain environment to execute realistically. Running Kali before AD is live would limit simulations to basic network scans and brute force, which Suricata and Cowrie already handle independently. The full attacker-defender loop only closes once the entire stack is in place.</p>
+        </div>
+      </div>
+
+      <!-- SIEM -->
+      <div id="doc-siem" class="doc-page">
+        <div class="doc-header">
+          <div class="doc-breadcrumb">Documentation / Detection Engineering</div>
+          <div class="doc-title">SIEM &amp; Detection Engineering</div>
+          <div class="doc-meta">
+            <span class="tag tag-gray">Planned</span>
+            <span>Category: Detection Engineering</span>
+            <span>Updated: March 2026</span>
+          </div>
+        </div>
+        <div class="doc-section">
+          <h3>Purpose</h3>
+          <p>The planned SIEM stack — Wazuh manager + Elastic Stack (Elasticsearch, Logstash, Kibana) — will serve as the capstone of the lab. It will aggregate telemetry from all nodes, normalize events, and run custom detection rules modeled on MITRE ATT&CK techniques. This is the core deliverable that demonstrates detection engineering capability to prospective employers.</p>
+        </div>
+        <div class="doc-section">
+          <h3>Planned Architecture</h3>
+          <table class="spec-table">
+            <tr><th>Component</th><th>Role</th><th>Status</th></tr>
+            <tr><td>Wazuh Manager</td><td>Agent management, rule engine</td><td><span class="tag tag-gray">Planned</span></td></tr>
+            <tr><td>Elasticsearch</td><td>Log storage and indexing</td><td><span class="tag tag-gray">Planned</span></td></tr>
+            <tr><td>Logstash</td><td>Log normalization pipeline</td><td><span class="tag tag-gray">Planned</span></td></tr>
+            <tr><td>Kibana</td><td>Dashboards and alert visualization</td><td><span class="tag tag-gray">Planned</span></td></tr>
+            <tr><td>Wazuh Agents</td><td>All Windows + Ubuntu VMs</td><td><span class="tag tag-gray">Planned</span></td></tr>
+          </table>
+        </div>
+        <div class="doc-section">
+          <h3>Detection Engineering Roadmap</h3>
+          <p>Detection rules will be authored in Wazuh OSSEC-style XML and mapped to MITRE ATT&CK technique IDs. Priority detection areas include credential access (T1003, T1110), discovery (T1046, T1018), and lateral movement (T1021, T1550).</p>
+          <div class="info-box">Documentation for this section will be populated as SIEM integration milestones are completed. Each detection rule will be documented with its MITRE mapping, logic, true-positive test case, and known false-positive suppression.</div>
+        </div>
+      </div>
+
+    </main>
+  </div>
+</main>
+
+<script>
+  /* ── Documentation sidebar tab switcher ── */
+  function showDoc(name, clickedEl) {
+    document.querySelectorAll('.doc-page').forEach(p => p.classList.remove('active'));
+    var target = document.getElementById('doc-' + name);
+    if (target) target.classList.add('active');
+    document.querySelectorAll('.docs-nav a').forEach(a => a.classList.remove('active'));
+    if (clickedEl) {
+      clickedEl.classList.add('active');
+    } else {
+      var map = {proxmox:0,ubuntu:1,windows:2,ad:3,network:4,raspi:5,kali:6,siem:7};
+      var links = document.querySelectorAll('.docs-nav a');
+      if (map[name] !== undefined) links[map[name]].classList.add('active');
+    }
+    window.scrollTo(0, 0);
+  }
+  /* Open to hash on load e.g. documentation.html#proxmox */
+  window.addEventListener('DOMContentLoaded', function() {
+    var hash = window.location.hash.replace('#','');
+    var valid = ['proxmox','ubuntu','windows','ad','network','raspi','kali','siem'];
+    if (hash && valid.indexOf(hash) !== -1) showDoc(hash);
+  });
+</script>
+</body>
+</html>

@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Home | Cybersecurity Homelab</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;700&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">homelab.engineer</div>
+  <ul class="nav-links">
+    <li><a href="index.html" class="active">Home</a></li>
+    <li><a href="documentation.html">Documentation</a></li>
+    <li><a href="timeline.html">Build Timeline</a></li>
+    <li><a href="about.html">About</a></li>
+  </ul>
+</nav>
+
+<main>
+
+  <div class="hero">
+    <div style="display:flex; align-items:center; gap:16px; margin-bottom:8px; flex-wrap:wrap;">
+      <div class="hero-tag" style="margin-bottom:0">Security Operations · Detection Engineering</div>
+      <div style="display:flex; align-items:center; gap:6px; font-family:var(--font-mono); font-size:11px; color:var(--green); letter-spacing:0.08em;">
+        <span style="width:7px; height:7px; border-radius:50%; background:var(--green); display:inline-block; animation:pulse 2s ease-in-out infinite;"></span>
+        ACTIVELY BUILDING
+      </div>
+    </div>
+    <h1>Cybersecurity<br><span>Homelab</span> Engineer</h1>
+    <p class="hero-sub">
+      Building a production-grade SOC simulation environment — virtualized on Proxmox, instrumented with Sysmon, Suricata, and Cowrie, and engineered for detection engineering practice at enterprise scale.
+    </p>
+    <div class="hero-btns">
+      <a href="#network-section" class="btn btn-primary">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M2 12h3M19 12h3M12 2v3M12 19v3"/></svg>
+        View Homelab
+      </a>
+      <a href="#" class="btn btn-outline">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+        Documentation
+      </a>
+      <a href="#" class="btn btn-outline">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="2" x2="12" y2="6"/><line x1="12" y1="18" x2="12" y2="22"/><circle cx="12" cy="12" r="4"/><line x1="4.93" y1="4.93" x2="7.76" y2="7.76"/><line x1="16.24" y1="16.24" x2="19.07" y2="19.07"/></svg>
+        Build Timeline
+      </a>
+    </div>
+  </div>
+
+  <!-- NETWORK DIAGRAM -->
+  <div class="home-grid" id="network-section">
+    <div class="card card-full">
+      <div class="card-title">Homelab Network Overview</div>
+      <div class="network-diagram" style="height:370px">
+        <svg class="net-svg" viewBox="0 0 960 360" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto">
+              <path d="M0,0 L0,6 L8,3 z" fill="#1e2d3d"/>
+            </marker>
+            <marker id="arrow-accent" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto">
+              <path d="M0,0 L0,6 L8,3 z" fill="#00d4ff"/>
+            </marker>
+            <marker id="arrow-dim" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto">
+              <path d="M0,0 L0,6 L8,3 z" fill="#243447"/>
+            </marker>
+            <filter id="glow">
+              <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+              <feMerge><feMergeNode in="coloredBlur"/><feMergeNode in="SourceGraphic"/></feMerge>
+            </filter>
+            <filter id="glow-sm">
+              <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
+              <feMerge><feMergeNode in="coloredBlur"/><feMergeNode in="SourceGraphic"/></feMerge>
+            </filter>
+          </defs>
+
+          <!-- ── LAYER LABELS ── -->
+          <text x="14" y="52" font-family="JetBrains Mono,monospace" font-size="8" fill="#243447" letter-spacing="1">INTERNET</text>
+          <text x="14" y="132" font-family="JetBrains Mono,monospace" font-size="8" fill="#243447" letter-spacing="1">ISOLATION</text>
+          <text x="14" y="212" font-family="JetBrains Mono,monospace" font-size="8" fill="#243447" letter-spacing="1">LAB LAN</text>
+          <text x="14" y="302" font-family="JetBrains Mono,monospace" font-size="8" fill="#243447" letter-spacing="1">PROXMOX</text>
+
+          <!-- ── HORIZONTAL DIVIDERS ── -->
+          <line x1="80" y1="60" x2="940" y2="60" stroke="#1a2535" stroke-width="1" stroke-dasharray="2,6"/>
+          <line x1="80" y1="145" x2="940" y2="145" stroke="#1a2535" stroke-width="1" stroke-dasharray="2,6"/>
+          <line x1="80" y1="230" x2="940" y2="230" stroke="#1a2535" stroke-width="1" stroke-dasharray="2,6"/>
+
+          <!-- ══ ROW 1: Internet Cloud ══ -->
+          <!-- Internet label box -->
+          <rect x="410" y="18" width="140" height="34" rx="2" fill="#0a0f16" stroke="#1a2535" stroke-width="1"/>
+          <text x="480" y="32" font-family="JetBrains Mono,monospace" font-size="9" fill="#4a5568" text-anchor="middle" letter-spacing="1">HOME NETWORK</text>
+          <text x="480" y="45" font-family="JetBrains Mono,monospace" font-size="8" fill="#2d3f52" text-anchor="middle">10.0.0.0/24</text>
+
+          <!-- Internet → Pi3B -->
+          <line x1="480" y1="52" x2="300" y2="82" stroke="#1e2d3d" stroke-width="1" marker-end="url(#arrow)" opacity="0.6"/>
+          <text x="370" y="70" font-family="JetBrains Mono,monospace" font-size="8" fill="#2d3f52" text-anchor="middle">Wi-Fi upstream</text>
+
+          <!-- ══ ROW 2: Pi 3B (WAN Bridge) ══ -->
+          <!-- Pi 3B node — LEFT, accent colored as it's the entry point -->
+          <rect x="175" y="82" width="155" height="54" rx="2" fill="#0d1117" stroke="#00d4ff" stroke-width="1.5" filter="url(#glow-sm)"/>
+          <text x="252" y="101" font-family="JetBrains Mono,monospace" font-size="10" fill="#e6edf3" font-weight="500" text-anchor="middle" letter-spacing="1">PI 3B</text>
+          <text x="252" y="116" font-family="JetBrains Mono,monospace" font-size="8" fill="#00d4ff" text-anchor="middle">WAN BRIDGE</text>
+          <text x="252" y="129" font-family="JetBrains Mono,monospace" font-size="8" fill="#4a5568" text-anchor="middle">NAT · DHCP · Firewall</text>
+          <circle cx="193" cy="89" r="3" fill="#39d353" filter="url(#glow-sm)"/>
+
+          <!-- Pi3B → ASUS -->
+          <line x1="330" y1="109" x2="450" y2="109" stroke="#00d4ff" stroke-width="1.5" marker-end="url(#arrow-accent)" opacity="0.8"/>
+          <text x="390" y="103" font-family="JetBrains Mono,monospace" font-size="8" fill="#2d3f52" text-anchor="middle">eth0 → WAN</text>
+
+          <!-- ASUS Router node — CENTER -->
+          <rect x="450" y="82" width="165" height="54" rx="2" fill="#0d1117" stroke="#00d4ff" stroke-width="1.5" filter="url(#glow-sm)"/>
+          <text x="532" y="101" font-family="JetBrains Mono,monospace" font-size="10" fill="#e6edf3" font-weight="500" text-anchor="middle" letter-spacing="1">ASUS RT-AX88U</text>
+          <text x="532" y="116" font-family="JetBrains Mono,monospace" font-size="8" fill="#00d4ff" text-anchor="middle">LAB ROUTER / GATEWAY</text>
+          <text x="532" y="129" font-family="JetBrains Mono,monospace" font-size="8" fill="#4a5568" text-anchor="middle">LAN: 192.168.50.0/24</text>
+          <circle cx="468" cy="89" r="3" fill="#39d353" filter="url(#glow-sm)"/>
+
+          <!-- ══ ROW 3: Pi 4 Suricata + Pi 4 Honeypot ══ -->
+
+          <!-- ASUS → Pi4 Suricata -->
+          <line x1="500" y1="136" x2="255" y2="162" stroke="#1e2d3d" stroke-width="1.5" marker-end="url(#arrow)" opacity="0.7"/>
+
+          <!-- ASUS → Pi4 Honeypot -->
+          <line x1="560" y1="136" x2="690" y2="162" stroke="#1e2d3d" stroke-width="1.5" marker-end="url(#arrow)" opacity="0.7"/>
+
+          <!-- ASUS → Proxmox (straight down) -->
+          <line x1="532" y1="136" x2="532" y2="162" stroke="#00d4ff" stroke-width="1.5" marker-end="url(#arrow-accent)" opacity="0.9"/>
+
+          <!-- Pi 4 Suricata -->
+          <rect x="140" y="162" width="155" height="54" rx="2" fill="#0d1117" stroke="#39d353" stroke-width="1.5" filter="url(#glow-sm)"/>
+          <text x="217" y="181" font-family="JetBrains Mono,monospace" font-size="10" fill="#e6edf3" font-weight="500" text-anchor="middle" letter-spacing="1">PI 4</text>
+          <text x="217" y="196" font-family="JetBrains Mono,monospace" font-size="8" fill="#39d353" text-anchor="middle">SURICATA IDS</text>
+          <text x="217" y="209" font-family="JetBrains Mono,monospace" font-size="8" fill="#4a5568" text-anchor="middle">Gateway sensor · EVE JSON</text>
+          <circle cx="158" cy="169" r="3" fill="#39d353" filter="url(#glow-sm)"/>
+
+          <!-- Pi 4 Honeypot -->
+          <rect x="615" y="162" width="155" height="54" rx="2" fill="#0d1117" stroke="#39d353" stroke-width="1.5" filter="url(#glow-sm)"/>
+          <text x="692" y="181" font-family="JetBrains Mono,monospace" font-size="10" fill="#e6edf3" font-weight="500" text-anchor="middle" letter-spacing="1">PI 4</text>
+          <text x="692" y="196" font-family="JetBrains Mono,monospace" font-size="8" fill="#39d353" text-anchor="middle">COWRIE HONEYPOT</text>
+          <text x="692" y="209" font-family="JetBrains Mono,monospace" font-size="8" fill="#4a5568" text-anchor="middle">SSH/Telnet deception · JSON</text>
+          <circle cx="633" cy="169" r="3" fill="#39d353" filter="url(#glow-sm)"/>
+
+          <!-- ══ ROW 4: Proxmox + VMs ══ -->
+
+          <!-- Suricata → Ubuntu (telemetry dashed) -->
+          <line x1="217" y1="216" x2="400" y2="272" stroke="#39d353" stroke-width="1" stroke-dasharray="4,4" opacity="0.5" marker-end="url(#arrow-dim)"/>
+
+          <!-- Honeypot → Ubuntu (telemetry dashed) -->
+          <line x1="692" y1="216" x2="590" y2="272" stroke="#39d353" stroke-width="1" stroke-dasharray="4,4" opacity="0.5" marker-end="url(#arrow-dim)"/>
+
+          <!-- Proxmox host box (background) — wider to fit Kali -->
+          <rect x="270" y="245" width="620" height="100" rx="2" fill="#0a0e14" stroke="#1e2d3d" stroke-width="1" stroke-dasharray="3,5"/>
+          <text x="290" y="261" font-family="JetBrains Mono,monospace" font-size="8" fill="#243447" letter-spacing="1">PROXMOX VE — Mac Mini i5 · 32GB RAM · 512GB SSD</text>
+
+          <!-- Ubuntu SOC VM -->
+          <rect x="282" y="267" width="135" height="66" rx="2" fill="#0d1117" stroke="#00d4ff" stroke-width="1.5" filter="url(#glow-sm)"/>
+          <text x="349" y="287" font-family="JetBrains Mono,monospace" font-size="10" fill="#e6edf3" font-weight="500" text-anchor="middle" letter-spacing="1">UBUNTU</text>
+          <text x="349" y="302" font-family="JetBrains Mono,monospace" font-size="8" fill="#00d4ff" text-anchor="middle">SOC SERVER</text>
+          <text x="349" y="315" font-family="JetBrains Mono,monospace" font-size="8" fill="#4a5568" text-anchor="middle">Wazuh · Elastic (planned)</text>
+          <text x="349" y="328" font-family="JetBrains Mono,monospace" font-size="8" fill="#4a5568" text-anchor="middle">10.10.10.10</text>
+          <circle cx="300" cy="274" r="3" fill="#39d353" filter="url(#glow-sm)"/>
+
+          <!-- Windows 11 VM -->
+          <rect x="432" y="267" width="135" height="66" rx="2" fill="#0d1117" stroke="#f0883e" stroke-width="1.5"/>
+          <text x="499" y="287" font-family="JetBrains Mono,monospace" font-size="10" fill="#e6edf3" font-weight="500" text-anchor="middle" letter-spacing="1">WINDOWS 11</text>
+          <text x="499" y="302" font-family="JetBrains Mono,monospace" font-size="8" fill="#f0883e" text-anchor="middle">ENDPOINT VM</text>
+          <text x="499" y="315" font-family="JetBrains Mono,monospace" font-size="8" fill="#4a5568" text-anchor="middle">Sysmon · Wazuh agent</text>
+          <text x="499" y="328" font-family="JetBrains Mono,monospace" font-size="8" fill="#4a5568" text-anchor="middle">In Progress</text>
+          <circle cx="450" cy="274" r="3" fill="#f0883e"/>
+
+          <!-- Win Server AD (pending) — inside Proxmox box -->
+          <rect x="582" y="267" width="145" height="66" rx="2" fill="#0a0e14" stroke="#243447" stroke-width="1" stroke-dasharray="4,3"/>
+          <text x="654" y="287" font-family="JetBrains Mono,monospace" font-size="10" fill="#4a5568" font-weight="500" text-anchor="middle" letter-spacing="1">WIN SERVER</text>
+          <text x="654" y="302" font-family="JetBrains Mono,monospace" font-size="8" fill="#2d3f52" text-anchor="middle">ACTIVE DIRECTORY</text>
+          <text x="654" y="315" font-family="JetBrains Mono,monospace" font-size="8" fill="#2d3f52" text-anchor="middle">Domain Controller</text>
+          <text x="654" y="328" font-family="JetBrains Mono,monospace" font-size="8" fill="#2d3f52" text-anchor="middle">Pending</text>
+          <circle cx="600" cy="274" r="3" fill="#4a5568"/>
+
+          <!-- Kali Linux VM (pending) — inside Proxmox box -->
+          <rect x="742" y="267" width="135" height="66" rx="2" fill="#0a0e14" stroke="#ff4444" stroke-width="1" stroke-dasharray="4,3"/>
+          <text x="809" y="287" font-family="JetBrains Mono,monospace" font-size="10" fill="#4a5568" font-weight="500" text-anchor="middle" letter-spacing="1">KALI LINUX</text>
+          <text x="809" y="302" font-family="JetBrains Mono,monospace" font-size="8" fill="#7a2020" text-anchor="middle">ATTACKER VM</text>
+          <text x="809" y="315" font-family="JetBrains Mono,monospace" font-size="8" fill="#2d3f52" text-anchor="middle">Red Team · Post-AD</text>
+          <text x="809" y="328" font-family="JetBrains Mono,monospace" font-size="8" fill="#2d3f52" text-anchor="middle">Pending</text>
+          <circle cx="760" cy="274" r="3" fill="#4a5568"/>
+          <!-- Win Server ↔ Kali (planned attack path) -->
+          <line x1="727" y1="300" x2="742" y2="300" stroke="#ff4444" stroke-width="1" stroke-dasharray="3,4" opacity="0.3" marker-end="url(#arrow-dim)"/>
+
+          <!-- Ubuntu ↔ Win11 telemetry -->
+          <line x1="417" y1="300" x2="432" y2="300" stroke="#1e2d3d" stroke-width="1" stroke-dasharray="4,4" opacity="0.5" marker-end="url(#arrow-dim)"/>
+          <!-- Win11 ↔ Win Server telemetry -->
+          <line x1="567" y1="300" x2="582" y2="300" stroke="#1e2d3d" stroke-width="1" stroke-dasharray="4,4" opacity="0.5" marker-end="url(#arrow-dim)"/>
+          <!-- ── LEGEND ── -->
+          <line x1="100" y1="348" x2="126" y2="348" stroke="#00d4ff" stroke-width="1.5" opacity="0.8"/>
+          <text x="132" y="352" font-family="JetBrains Mono,monospace" font-size="8" fill="#4a5568">Primary traffic</text>
+          <line x1="240" y1="348" x2="266" y2="348" stroke="#39d353" stroke-width="1" stroke-dasharray="4,3" opacity="0.7"/>
+          <text x="272" y="352" font-family="JetBrains Mono,monospace" font-size="8" fill="#4a5568">Telemetry / logs</text>
+          <line x1="390" y1="348" x2="416" y2="348" stroke="#1e2d3d" stroke-width="1" stroke-dasharray="3,5"/>
+          <text x="422" y="352" font-family="JetBrains Mono,monospace" font-size="8" fill="#4a5568">Planned</text>
+          <rect x="510" y="341" width="8" height="8" fill="#0a0e14" stroke="#243447" stroke-width="1" stroke-dasharray="2,2"/>
+          <text x="524" y="352" font-family="JetBrains Mono,monospace" font-size="8" fill="#4a5568">Pending node</text>
+        </svg>
+      </div>
+    </div>
+
+    <!-- SYSTEM STATUS -->
+    <div class="card">
+      <div class="card-title">System Status</div>
+      <ul class="status-list">
+        <li class="status-item">
+          <span class="dot dot-green"></span>
+          <span class="status-label">Proxmox Hypervisor</span>
+          <span class="status-val online">Online</span>
+        </li>
+        <li class="status-item">
+          <span class="dot dot-green"></span>
+          <span class="status-label">Pi 3B — WAN Bridge</span>
+          <span class="status-val online">Online</span>
+        </li>
+        <li class="status-item">
+          <span class="dot dot-green"></span>
+          <span class="status-label">Pi 4 — Suricata IDS</span>
+          <span class="status-val online">Online</span>
+        </li>
+        <li class="status-item">
+          <span class="dot dot-green"></span>
+          <span class="status-label">Pi 4 — Cowrie Honeypot</span>
+          <span class="status-val online">Online</span>
+        </li>
+        <li class="status-item">
+          <span class="dot dot-green"></span>
+          <span class="status-label">Ubuntu SOC Server VM</span>
+          <span class="status-val online">Online</span>
+        </li>
+        <li class="status-item">
+          <span class="dot dot-orange"></span>
+          <span class="status-label">Windows 11 VM</span>
+          <span class="status-val inprogress">In Progress</span>
+        </li>
+        <li class="status-item">
+          <span class="dot dot-gray"></span>
+          <span class="status-label">Win Server — Active Directory</span>
+          <span class="status-val planned">Pending</span>
+        </li>
+        <li class="status-item">
+          <span class="dot dot-gray"></span>
+          <span class="status-label">Kali Linux — Attacker VM</span>
+          <span class="status-val planned">Pending</span>
+        </li>
+        <li class="status-item">
+          <span class="dot dot-gray"></span>
+          <span class="status-label">SIEM Integration (Wazuh + Elastic)</span>
+          <span class="status-val planned">Planned</span>
+        </li>
+      </ul>
+    </div>
+
+    <!-- DOCUMENTATION LINKS -->
+    <div class="card">
+      <div class="card-title">Documentation</div>
+      <ul class="doc-links">
+        <li class="doc-link-item"><a href="documentation.html#proxmox">Proxmox Configuration</a></li>
+        <li class="doc-link-item"><a href="documentation.html#raspi">Raspberry Pi Cluster</a></li>
+        <li class="doc-link-item"><a href="documentation.html#ubuntu">Ubuntu SOC Server</a></li>
+        <li class="doc-link-item"><a href="documentation.html#windows">Windows 11 Deployment</a></li>
+        <li class="doc-link-item"><a href="documentation.html#network">Network Architecture</a></li>
+        <li class="doc-link-item"><a href="documentation.html#siem">SIEM &amp; Detection Engineering</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- TOOLS STRIP -->
+  <div class="tools-strip">
+    <div class="section-label">Technologies &amp; Tools</div>
+    <div class="tools-grid">
+      <span class="tool-chip">Proxmox VE</span>
+      <span class="tool-chip">Ubuntu Server</span>
+      <span class="tool-chip">Windows 11</span>
+      <span class="tool-chip">Windows Server</span>
+      <span class="tool-chip">Active Directory</span>
+      <span class="tool-chip">Sysmon</span>
+      <span class="tool-chip">Wazuh</span>
+      <span class="tool-chip">Elastic Stack</span>
+      <span class="tool-chip">Suricata IDS</span>
+      <span class="tool-chip">Cowrie Honeypot</span>
+      <span class="tool-chip">Kali Linux</span>
+      <span class="tool-chip">Raspberry Pi</span>
+      <span class="tool-chip">ASUS Router</span>
+    </div>
+  </div>
+
+  <div class="footer-bar">
+    <span>Last Update: <strong>March 2026</strong></span>
+    <span class="verified">● System Integrity: Verified</span>
+    <span style="margin-left:auto; color: var(--text3)">Cybersecurity Homelab Engineer</span>
+  </div>
+</main>
+
+</body>
+</html>

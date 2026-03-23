@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Build Timeline | Cybersecurity Homelab</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;700&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">homelab.engineer</div>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="documentation.html">Documentation</a></li>
+    <li><a href="timeline.html" class="active">Build Timeline</a></li>
+    <li><a href="about.html">About</a></li>
+  </ul>
+</nav>
+
+<main>
+  <div class="timeline-wrap">
+    <div class="timeline-header">
+      <div class="hero-tag">Chronological Build Log</div>
+      <h2>Build Timeline</h2>
+      <p>Every milestone, decision, and deployment — from bare metal to SOC simulation.</p>
+    </div>
+
+    <div class="timeline">
+
+      <div class="tl-item" style="animation-delay:0.05s">
+        <div class="tl-dot tl-dot-green"></div>
+        <div class="tl-date">Phase 01 · January 2026</div>
+        <div class="tl-title">Network Restructuring</div>
+        <div class="tl-why">The foundation everything else is built on. Configured the Raspberry Pi 3B as a Wi-Fi to Ethernet WAN bridge with NAT, DHCP, and firewall isolation rules — creating a fully isolated lab network behind the ASUS router with no access to the home LAN. This mirrors real-world ISP-style network boundary architecture.</div>
+        <span class="tag tag-green">Completed</span>
+      </div>
+
+      <div class="tl-item" style="animation-delay:0.1s">
+        <div class="tl-dot tl-dot-green"></div>
+        <div class="tl-date">Phase 02 · January 2026</div>
+        <div class="tl-title">Suricata IDS Deployment</div>
+        <div class="tl-why">Deployed Suricata on a Raspberry Pi 4 as a Gateway IDS — positioned so all lab traffic flows through it. Configured EVE JSON output for SIEM ingestion, built a custom logrotate policy to protect the SD card, and validated 0 packet drops under full load. This is the network-layer sensor for the entire lab.</div>
+        <span class="tag tag-green">Completed</span>
+      </div>
+
+      <div class="tl-item" style="animation-delay:0.15s">
+        <div class="tl-dot tl-dot-green"></div>
+        <div class="tl-date">Phase 03 · January 2026</div>
+        <div class="tl-title">Cowrie Honeypot Deployment</div>
+        <div class="tl-why">Deployed Cowrie on a second Raspberry Pi 4 as a medium-interaction SSH/Telnet honeypot. Resolved Python version conflicts by compiling Python 3.11 from source, and configured a systemd service for 24/7 persistence. Captures real attacker behavior — brute-force attempts, commands run, and tools used.</div>
+        <span class="tag tag-green">Completed</span>
+      </div>
+
+      <div class="tl-item" style="animation-delay:0.2s">
+        <div class="tl-dot tl-dot-green"></div>
+        <div class="tl-date">Phase 04 · February 2026</div>
+        <div class="tl-title">Proxmox Hypervisor Setup</div>
+        <div class="tl-why">Installed Proxmox VE on a dedicated Mac Mini (i5, 32GB RAM, 512GB SSD) as the bare-metal virtualization backbone. Configured network bridges, storage pools, and the web management interface. This host runs all lab VMs and is the platform all future detection engineering work is built on.</div>
+        <span class="tag tag-green">Completed</span>
+      </div>
+
+      <div class="tl-item" style="animation-delay:0.25s">
+        <div class="tl-dot tl-dot-green"></div>
+        <div class="tl-date">Phase 05 · February 2026</div>
+        <div class="tl-title">Ubuntu SOC VM Deployment</div>
+        <div class="tl-why">Stood up the central SOC backbone VM on Proxmox. Ubuntu Server 22.04 LTS was chosen for its stability and compatibility with the planned Wazuh + Elastic Stack pipeline. Configured static IP, UFW firewall baseline, and NTP synchronization — the hub all other nodes will eventually report into.</div>
+        <span class="tag tag-green">Completed</span>
+      </div>
+
+      <div class="tl-item" style="animation-delay:0.3s">
+        <div class="tl-dot tl-dot-orange"></div>
+        <div class="tl-date">Phase 06 · March 2026 — Ongoing</div>
+        <div class="tl-title">Windows 11 VM Creation + Sysmon</div>
+        <div class="tl-why">Deploying Windows 11 as a domain-joined endpoint VM with Sysmon configured for rich telemetry — process creation, network connections, DNS queries, and registry changes. These events are the raw material for detection engineering and will feed directly into the SIEM pipeline once integrated.</div>
+        <span class="tag tag-orange">In Progress</span>
+      </div>
+
+      <div class="tl-item" style="animation-delay:0.35s">
+        <div class="tl-dot tl-dot-gray"></div>
+        <div class="tl-date">Phase 07 · Q2 2026</div>
+        <div class="tl-title">Windows Server + Active Directory</div>
+        <div class="tl-why">Will deploy Windows Server 2022 as a domain controller for lab.local alongside the Windows 11 VM inside Proxmox. Active Directory will enable realistic authentication event logging, Group Policy enforcement, and Kerberos-based attack simulation — all fundamental to SOC analyst training.</div>
+        <span class="tag tag-gray">Pending</span>
+      </div>
+
+      <div class="tl-item" style="animation-delay:0.4s">
+        <div class="tl-dot tl-dot-gray"></div>
+        <div class="tl-date">Phase 08 · Q2 2026</div>
+        <div class="tl-title">Kali Linux Deployment</div>
+        <div class="tl-why">Deploy Kali Linux as the attacker VM inside Proxmox once Active Directory is live. Sequenced here deliberately — the most valuable attack scenarios (Kerberoasting, Pass-the-Hash, lateral movement) require a domain environment. This phase activates the full attacker-defender loop and makes every upstream detection component meaningful.</div>
+        <span class="tag tag-gray">Planned</span>
+      </div>
+
+      <div class="tl-item" style="animation-delay:0.45s">
+        <div class="tl-dot tl-dot-gray"></div>
+        <div class="tl-date">Phase 09 · Q2 2026</div>
+        <div class="tl-title">Wazuh Manager Integration</div>
+        <div class="tl-why">Will deploy Wazuh Manager on the Ubuntu SOC VM and install agents across all Windows VMs and Raspberry Pi sensors. Wazuh provides the rule engine that transforms raw logs into structured, actionable alerts — the core of the detection pipeline.</div>
+        <span class="tag tag-gray">Planned</span>
+      </div>
+
+      <div class="tl-item" style="animation-delay:0.5s">
+        <div class="tl-dot tl-dot-gray"></div>
+        <div class="tl-date">Phase 10 · Q2 2026</div>
+        <div class="tl-title">Elastic Stack + SIEM Dashboard</div>
+        <div class="tl-why">Will integrate Elasticsearch, Logstash, and Kibana for log storage, normalization, and visualization. Kibana dashboards will surface detection alerts and provide analyst workflows — demonstrating the full SIEM pipeline from raw endpoint telemetry to actionable alert.</div>
+        <span class="tag tag-gray">Planned</span>
+      </div>
+
+      <div class="tl-item" style="animation-delay:0.55s">
+        <div class="tl-dot tl-dot-gray"></div>
+        <div class="tl-date">Phase 11 · Early Q3 2026</div>
+        <div class="tl-title">Detection Rule Authoring &amp; MITRE ATT&amp;CK Mapping</div>
+        <div class="tl-why">Write custom Wazuh detection rules and decoders mapped to MITRE ATT&CK technique IDs. Build a detection coverage matrix documenting what is detected, what is missing, and why. Validate each rule against real attack simulations from Kali. Each rule documented with its technique ID, logic, true-positive test case, and false-positive suppression.</div>
+        <span class="tag tag-gray">Planned</span>
+      </div>
+
+      <div class="tl-item" style="animation-delay:0.55s">
+        <div class="tl-dot tl-dot-gray"></div>
+        <div class="tl-date">Future Evolution · Post Q3 2026</div>
+        <div class="tl-title">VLAN Segmentation &amp; Enhanced Network Visibility</div>
+        <div class="tl-why">Introduce enterprise-grade network separation using VLANs: servers/SIEM, workstations, attacker/research, and Raspberry Pi cluster on dedicated segments. Add inter-VLAN firewall rules and log blocked traffic to create segmentation-based detection scenarios that mirror real corporate network architecture.</div>
+        <span class="tag tag-gray">Future</span>
+      </div>
+
+      <div class="tl-item" style="animation-delay:0.6s">
+        <div class="tl-dot tl-dot-gray"></div>
+        <div class="tl-date">Future Evolution · Post Q3 2026</div>
+        <div class="tl-title">Docker &amp; Expanded Honeypot Microservices</div>
+        <div class="tl-why">Deploy Docker on the Raspberry Pi cluster to host additional honeypot microservices — web, SMB, and SSH — beyond Cowrie. This creates a richer deception layer with more attack surface for threat intelligence collection, and introduces container-based log forwarding into the SIEM pipeline.</div>
+        <span class="tag tag-gray">Future</span>
+      </div>
+
+      <div class="tl-item" style="animation-delay:0.65s">
+        <div class="tl-dot tl-dot-gray"></div>
+        <div class="tl-date">Future Evolution · Post Q3 2026</div>
+        <div class="tl-title">SOC Dashboard &amp; Threat Hunting Playbooks</div>
+        <div class="tl-why">Build Kibana dashboards for real-time alerting, endpoint health monitoring, and network anomaly visualization. Develop threat hunting playbooks for lateral movement, privilege escalation, and persistence — documented in the same structured format as the existing lab documentation. This is the capstone of the detection engineering workflow.</div>
+        <span class="tag tag-gray">Future</span>
+      </div>
+
+    </div>
+  </div>
+</main>
+
+</body>
+</html>
