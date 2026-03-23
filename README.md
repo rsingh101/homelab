@@ -110,5 +110,4 @@ Home Network (10.0.0.0/24)
 | 10 | Elastic Stack + SIEM Dashboard | Q2 2026 | ⧖ |
 | 11 | Detection Rules + MITRE ATT&CK Mapping | Q3 2026 | ⧖ |
 
-
-*Calgary, AB · Last updated March 2026 · Actively building*
+---
