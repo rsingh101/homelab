@@ -825,16 +825,125 @@
   }
 
   /* ─── RESPONSIVE ─── */
+  /* ─── TABLET (max 900px) ─── */
   @media (max-width: 900px) {
+    /* Nav */
     nav { padding: 0 24px; }
-    .hero { padding: 60px 24px 40px; }
+
+    /* Hero */
+    .hero { padding: 72px 24px 40px; }
+    .hero h1 { font-size: clamp(36px, 8vw, 56px); }
+    .hero-sub { font-size: 13px; max-width: 100%; }
+    .hero-btns { flex-direction: column; align-items: flex-start; gap: 10px; }
+    .btn { width: 100%; justify-content: center; }
+
+    /* Home grid */
     .home-grid { padding: 0 24px 60px; grid-template-columns: 1fr; }
     .card-full { grid-column: 1; }
+
+    /* Network diagram — allow horizontal scroll on small screens */
+    .network-diagram { height: 320px; overflow-x: auto; }
+    .net-svg { min-width: 700px; }
+
+    /* Tools strip */
+    .tools-strip { padding: 0 24px 40px; }
+
+    /* Footer */
+    .footer-bar { padding: 20px 24px; flex-wrap: wrap; gap: 12px; }
+
+    /* Docs layout — hide sidebar, go single column */
     .docs-layout { padding: 40px 24px; grid-template-columns: 1fr; }
     .docs-sidebar { display: none; }
+
+    /* Doc content */
+    .doc-title { font-size: 24px; }
+    .code-block { font-size: 11px; padding: 16px; overflow-x: auto; }
+
+    /* Timeline */
     .timeline-wrap { padding: 40px 24px; }
+    .timeline-header h2 { font-size: 28px; }
+    .tl-title { font-size: 16px; }
+    .tl-why { max-width: 100%; }
+
+    /* About/Contact */
     .contact-wrap { padding: 60px 24px; }
-    .tools-strip { padding: 0 24px 40px; }
-    .footer-bar { padding: 20px 24px; flex-wrap: wrap; gap: 12px; }
+  }
+
+  /* ─── MOBILE (max 600px) ─── */
+  @media (max-width: 600px) {
+    /* Nav — shrink logo + links */
+    nav { padding: 0 16px; height: 56px; }
+    .nav-logo { font-size: 11px; }
+    .nav-links a {
+      font-size: 10px;
+      padding: 6px 10px;
+      letter-spacing: 0.04em;
+    }
+
+    /* Hero */
+    .hero { padding: 68px 16px 32px; }
+    .hero h1 { font-size: clamp(30px, 9vw, 44px); line-height: 1.08; }
+    .hero-sub { font-size: 12px; line-height: 1.7; }
+    .hero-tag { font-size: 10px; letter-spacing: 0.12em; }
+
+    /* Buttons */
+    .btn { font-size: 11px; padding: 12px 20px; }
+
+    /* Home grid */
+    .home-grid { padding: 0 16px 48px; gap: 16px; }
+    .card { padding: 20px 16px; }
+    .card-title { font-size: 11px; }
+
+    /* Network diagram — scrollable */
+    .network-diagram { height: 280px; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+    .net-svg { min-width: 680px; height: 360px; }
+
+    /* Status list */
+    .status-item { font-size: 12px; padding: 11px 0; }
+    .status-val { font-size: 10px; }
+
+    /* Doc links */
+    .doc-link-item a { font-size: 12px; }
+
+    /* Tools strip */
+    .tools-strip { padding: 0 16px 32px; }
+    .section-label { font-size: 10px; }
+    .tool-chip { font-size: 10px; padding: 5px 10px; }
+
+    /* Footer bar */
+    .footer-bar { padding: 16px; font-size: 10px; flex-direction: column; gap: 6px; }
+
+    /* Docs */
+    .docs-layout { padding: 24px 16px; }
+    .doc-title { font-size: 20px; }
+    .doc-breadcrumb { font-size: 10px; }
+    .doc-meta { font-size: 10px; gap: 12px; flex-wrap: wrap; }
+    .doc-section h3 { font-size: 14px; }
+    .doc-section p { font-size: 12px; }
+    .code-block { font-size: 10px; padding: 14px 12px; }
+    .spec-table th { font-size: 9px; padding: 8px 10px; }
+    .spec-table td { font-size: 11px; padding: 9px 10px; }
+    .info-box { font-size: 11px; padding: 12px 14px; }
+
+    /* Timeline */
+    .timeline-wrap { padding: 32px 16px; }
+    .timeline { padding-left: 28px; }
+    .timeline-header h2 { font-size: 24px; }
+    .timeline-header p { font-size: 12px; }
+    .tl-dot { left: -34px; width: 10px; height: 10px; }
+    .tl-date { font-size: 10px; }
+    .tl-title { font-size: 15px; }
+    .tl-why { font-size: 12px; }
+    .tl-item { padding-bottom: 36px; }
+
+    /* About page */
+    .contact-wrap { padding: 40px 16px; }
+  }
+
+  /* ─── SMALL PHONES (max 400px) ─── */
+  @media (max-width: 400px) {
+    .nav-links a { font-size: 9px; padding: 6px 7px; }
+    .hero h1 { font-size: 28px; }
+    .nav-logo { font-size: 10px; }
   }
 </style>
