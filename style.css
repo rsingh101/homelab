@@ -362,7 +362,8 @@
   }
 
   .dot-green { background: var(--green); box-shadow: 0 0 8px var(--green); }
-  .dot-green::after {
+  /* Pulse animation scoped to status list only — not asset table dots */
+  .status-item .dot-green::after {
     content: '';
     position: absolute;
     inset: -3px;
