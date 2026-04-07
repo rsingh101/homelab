@@ -35,6 +35,8 @@
         <li><a href="#" onclick="showDoc('raspi',this)">Raspberry Pi Sensors</a></li>
         <li><a href="#" onclick="showDoc('kali',this)">Kali Linux Environment</a></li>
         <li><a href="#" onclick="showDoc('siem',this)">SIEM &amp; Detection</a></li>
+        <li><a href="#" onclick="showDoc('incidents',this)">Incident Reports</a></li>
+        <li><a href="#" onclick="showDoc('sops',this)">SOPs</a></li>
       </ul>
     </aside>
 
@@ -458,6 +460,241 @@ iptables -I INPUT  1 -i eth0 -d <span class="val">10.0.0.16</span> -j DROP
         </div>
       </div>
 
+
+      <!-- INCIDENT REPORTS -->
+      <div id="doc-incidents" class="doc-page">
+        <div class="doc-header">
+          <div class="doc-breadcrumb">Documentation / Troubleshooting</div>
+          <div class="doc-title">Incident Reports</div>
+          <div class="doc-meta">
+            <span>✓ Active</span>
+            <span>Category: Troubleshooting Logs</span>
+            <span>Updated: March 2026</span>
+          </div>
+        </div>
+
+        <div class="doc-section">
+          <p>Real problems encountered during lab build and operation, documented in incident report format. Each entry follows the same structure used in enterprise IT environments: Issue → Diagnostics → Resolution → Verification.</p>
+        </div>
+
+        <!-- IR-001 -->
+        <div class="incident-card">
+          <div class="incident-header">
+            <span class="incident-id">IR-001</span>
+            <span class="incident-title">Suricata Failing to Bind to Network Interface</span>
+            <span class="tag tag-green">Resolved</span>
+          </div>
+          <div class="incident-body">
+            <div class="ir-row">
+              <div class="ir-label">Issue</div>
+              <div class="ir-content">Suricata started without errors but produced no alerts and logged no traffic. EVE JSON output file remained empty despite network activity confirmed on the Pi.</div>
+            </div>
+            <div class="ir-row">
+              <div class="ir-label">Diagnostics</div>
+              <div class="ir-content">
+                Ran config validation to check interface binding:
+                <div class="code-block" style="margin-top:10px">
+                  <span class="code-label">bash</span>
+<span class="cmd">sudo</span> suricata -T -c /etc/suricata/suricata.yaml -i <span class="val">eth0</span>
+<span class="comment"># Error: eth0 not found — Pi uses wlan0 as upstream interface</span>
+                </div>
+                Confirmed active interface with <code>ip link show</code>. Interface was <code>wlan0</code>, not <code>eth0</code>. Config file had been set to <code>eth0</code> based on generic documentation.
+              </div>
+            </div>
+            <div class="ir-row">
+              <div class="ir-label">Resolution</div>
+              <div class="ir-content">Updated <code>/etc/suricata/suricata.yaml</code> to bind to <code>wlan0</code>. Restarted service and re-validated with <code>-T</code> flag — no errors. EVE JSON output immediately populated on next test ping.</div>
+            </div>
+            <div class="ir-row">
+              <div class="ir-label">Verification</div>
+              <div class="ir-content">Confirmed 0 packet drops in decoder stats. Alerts generating correctly. Ran <code>tail -f /var/log/suricata/eve.json</code> and observed live DNS and flow records during normal lab traffic.</div>
+            </div>
+            <div class="ir-row">
+              <div class="ir-label">Lesson</div>
+              <div class="ir-content">Always validate interface names on the actual hardware before deployment. Generic docs assume <code>eth0</code> — Raspberry Pi OS uses <code>wlan0</code> for Wi-Fi upstream. The <code>-T</code> (test mode) flag is the correct first diagnostic step for any Suricata binding issue.</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- IR-002 -->
+        <div class="incident-card">
+          <div class="incident-header">
+            <span class="incident-id">IR-002</span>
+            <span class="incident-title">Cowrie Honeypot Failing to Start — Python Version Conflict</span>
+            <span class="tag tag-green">Resolved</span>
+          </div>
+          <div class="incident-body">
+            <div class="ir-row">
+              <div class="ir-label">Issue</div>
+              <div class="ir-content">Cowrie installation completed without errors but the service failed to start. <code>systemctl status cowrie</code> showed a Python syntax error during import.</div>
+            </div>
+            <div class="ir-row">
+              <div class="ir-label">Diagnostics</div>
+              <div class="ir-content">
+                <div class="code-block" style="margin-top:4px">
+                  <span class="code-label">bash</span>
+<span class="cmd">python3</span> --version
+<span class="comment"># Python 3.9.2 — Cowrie requires 3.11+</span>
+<span class="cmd">pip3 install</span> -r requirements.txt
+<span class="comment"># Multiple dependency failures on 3.9</span>
+                </div>
+                Raspberry Pi OS Bullseye ships Python 3.9 by default. Cowrie's current dependency chain requires 3.11 minimum.
+              </div>
+            </div>
+            <div class="ir-row">
+              <div class="ir-label">Resolution</div>
+              <div class="ir-content">Compiled Python 3.11 from source on the Pi. Created a dedicated virtual environment pointing to the compiled binary, then reinstalled all Cowrie dependencies cleanly inside the venv.</div>
+            </div>
+            <div class="ir-row">
+              <div class="ir-label">Verification</div>
+              <div class="ir-content">Service started successfully. Confirmed SSH honeypot listening on configured port. Tested with a manual SSH connection attempt — Cowrie captured the session and logged it to JSON output.</div>
+            </div>
+            <div class="ir-row">
+              <div class="ir-label">Lesson</div>
+              <div class="ir-content">Default OS Python versions are often behind project requirements. Compiling from source is the clean fix — avoid adding PPAs or third-party repos to production-adjacent systems. Always check requirements.txt before installation.</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- IR-003 -->
+        <div class="incident-card">
+          <div class="incident-header">
+            <span class="incident-id">IR-003</span>
+            <span class="incident-title">ASUS Router Not Receiving DHCP from Pi 3B WAN Bridge</span>
+            <span class="tag tag-green">Resolved</span>
+          </div>
+          <div class="incident-body">
+            <div class="ir-row">
+              <div class="ir-label">Issue</div>
+              <div class="ir-content">ASUS router WAN port showing "No IP address" after connecting to the Pi 3B eth0. Lab devices had no internet access. Pi appeared to be running correctly.</div>
+            </div>
+            <div class="ir-row">
+              <div class="ir-label">Diagnostics</div>
+              <div class="ir-content">
+                Used tcpdump to observe DHCP traffic on the Pi eth0 interface:
+                <div class="code-block" style="margin-top:10px">
+                  <span class="code-label">bash</span>
+<span class="cmd">sudo</span> tcpdump -i eth0 -n port 67 or port 68
+<span class="comment"># DHCP DISCOVER packets arriving from ASUS</span>
+<span class="comment"># No DHCP OFFER being sent back from Pi</span>
+                </div>
+                DHCP DISCOVER packets were arriving from the ASUS router but no OFFER was being sent. Traced to <code>isc-dhcp-server</code> not listening on <code>eth0</code> — the <code>INTERFACES</code> config in <code>/etc/default/isc-dhcp-server</code> was blank.
+              </div>
+            </div>
+            <div class="ir-row">
+              <div class="ir-label">Resolution</div>
+              <div class="ir-content">Set <code>INTERFACESv4="eth0"</code> in <code>/etc/default/isc-dhcp-server</code>. Restarted the DHCP service. ASUS WAN immediately received an IP in the 192.168.100.x range.</div>
+            </div>
+            <div class="ir-row">
+              <div class="ir-label">Verification</div>
+              <div class="ir-content">ASUS WAN status showed connected with correct IP. Devices on ASUS LAN confirmed internet access via <code>ping 8.8.8.8</code>. Home LAN isolation confirmed — <code>ping 10.0.0.1</code> blocked as expected.</div>
+            </div>
+            <div class="ir-row">
+              <div class="ir-label">Lesson</div>
+              <div class="ir-content">isc-dhcp-server requires explicit interface binding in its defaults file — it won't listen on any interface until told to. tcpdump is the correct tool for diagnosing DHCP failures: if DISCOVER arrives but no OFFER is sent, the problem is always server-side configuration, not the client.</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- SOPs -->
+      <div id="doc-sops" class="doc-page">
+        <div class="doc-header">
+          <div class="doc-breadcrumb">Documentation / Standard Operating Procedures</div>
+          <div class="doc-title">Standard Operating Procedures</div>
+          <div class="doc-meta">
+            <span>✓ Active</span>
+            <span>Category: SOPs</span>
+            <span>Updated: March 2026</span>
+          </div>
+        </div>
+
+        <div class="doc-section">
+          <p>Standardised workflows for common lab operations. Written to be repeatable by anyone with access to the environment — the same standard expected in MSP and enterprise IT documentation.</p>
+        </div>
+
+        <!-- SOP-101 -->
+        <div class="sop-card">
+          <div class="sop-header">
+            <span class="sop-id">SOP-101</span>
+            <span class="sop-title">Provisioning a New VM on Proxmox</span>
+          </div>
+          <div class="sop-body">
+            <div class="sop-meta">Applies to: All new VM deployments &nbsp;·&nbsp; Est. time: 20–30 min</div>
+            <ol class="sop-steps">
+              <li>Log into Proxmox web UI at <code>https://&lt;proxmox-ip&gt;:8006</code></li>
+              <li>Upload ISO to local storage if not already present: Storage → local → ISO Images → Upload</li>
+              <li>Click <strong>Create VM</strong>. Set VM ID, name, and select the ISO</li>
+              <li>Assign resources: minimum 2 vCPU, 4GB RAM, 40GB disk on <code>local-lvm</code></li>
+              <li>Set network bridge to <code>vmbr1</code> for SOC subnet isolation or <code>vmbr0</code> for LAN access</li>
+              <li>Start VM, complete OS installation, set static IP in the appropriate subnet range</li>
+              <li>Configure NTP synchronisation immediately after OS install</li>
+              <li>Update <code>asset inventory</code> on index.html and the relevant documentation page</li>
+            </ol>
+          </div>
+        </div>
+
+        <!-- SOP-102 -->
+        <div class="sop-card">
+          <div class="sop-header">
+            <span class="sop-id">SOP-102</span>
+            <span class="sop-title">Updating Suricata Rules</span>
+          </div>
+          <div class="sop-body">
+            <div class="sop-meta">Applies to: Pi 4 Suricata IDS &nbsp;·&nbsp; Frequency: Weekly recommended</div>
+            <ol class="sop-steps">
+              <li>SSH into the Suricata Pi: <code>ssh pi@&lt;suricata-ip&gt;</code></li>
+              <li>Run rule update: <code>sudo suricata-update</code></li>
+              <li>Validate config before restart: <code>sudo suricata -T -c /etc/suricata/suricata.yaml -i wlan0</code></li>
+              <li>If validation passes, restart: <code>sudo systemctl restart suricata</code></li>
+              <li>Confirm service healthy: <code>sudo systemctl status suricata</code></li>
+              <li>Tail EVE JSON briefly to confirm alerts still generating: <code>tail -f /var/log/suricata/eve.json</code></li>
+            </ol>
+          </div>
+        </div>
+
+        <!-- SOP-103 -->
+        <div class="sop-card">
+          <div class="sop-header">
+            <span class="sop-id">SOP-103</span>
+            <span class="sop-title">Responding to a Cowrie Honeypot Alert</span>
+          </div>
+          <div class="sop-body">
+            <div class="sop-meta">Applies to: Pi 4 Cowrie Honeypot &nbsp;·&nbsp; Trigger: New session in cowrie.json</div>
+            <ol class="sop-steps">
+              <li>Review latest Cowrie JSON log: <code>tail -50 /home/cowrie/cowrie/var/log/cowrie/cowrie.json | python3 -m json.tool</code></li>
+              <li>Note attacker IP, timestamp, commands run, and any files attempted for download</li>
+              <li>Cross-reference IP against Suricata EVE JSON for correlated network events</li>
+              <li>Check if IP appears in other lab logs (Ubuntu auth.log, Windows Event Viewer)</li>
+              <li>Document the session: record technique, tools, and any IOCs (Indicators of Compromise)</li>
+              <li>If a real attack tool was downloaded, capture the hash for future reference</li>
+              <li>Add any new attacker IPs or patterns to Suricata custom rules if appropriate</li>
+            </ol>
+          </div>
+        </div>
+
+        <!-- SOP-104 -->
+        <div class="sop-card">
+          <div class="sop-header">
+            <span class="sop-id">SOP-104</span>
+            <span class="sop-title">Pi 3B WAN Bridge — Restoring Connectivity After Reboot</span>
+          </div>
+          <div class="sop-body">
+            <div class="sop-meta">Applies to: Raspberry Pi 3B &nbsp;·&nbsp; Trigger: Pi rebooted or DHCP lease expired</div>
+            <ol class="sop-steps">
+              <li>SSH into Pi 3B from main PC: <code>ssh pi@10.0.0.16</code></li>
+              <li>Verify both interfaces are up: <code>ip link show wlan0 &amp;&amp; ip link show eth0</code></li>
+              <li>Confirm NAT rule is active: <code>sudo iptables -t nat -L -n -v | grep MASQUERADE</code></li>
+              <li>If NAT rule missing, re-apply: <code>sudo iptables -t nat -A POSTROUTING -o wlan0 -j MASQUERADE</code></li>
+              <li>Confirm DHCP server running: <code>sudo systemctl status isc-dhcp-server</code></li>
+              <li>If DHCP stopped: <code>sudo systemctl start isc-dhcp-server</code></li>
+              <li>From a lab device, test: <code>ping 8.8.8.8</code> (internet) and confirm <code>ping 10.0.0.1</code> is still blocked</li>
+            </ol>
+          </div>
+        </div>
+
+      </div>
     </main>
   </div>
 </main>
@@ -472,7 +709,7 @@ iptables -I INPUT  1 -i eth0 -d <span class="val">10.0.0.16</span> -j DROP
     if (clickedEl) {
       clickedEl.classList.add('active');
     } else {
-      var map = {proxmox:0,ubuntu:1,windows:2,ad:3,network:4,raspi:5,kali:6,siem:7};
+      var map = {proxmox:0,ubuntu:1,windows:2,ad:3,network:4,raspi:5,kali:6,siem:7,incidents:8,sops:9};
       var links = document.querySelectorAll('.docs-nav a');
       if (map[name] !== undefined) links[map[name]].classList.add('active');
     }
@@ -481,7 +718,7 @@ iptables -I INPUT  1 -i eth0 -d <span class="val">10.0.0.16</span> -j DROP
   /* Open to hash on load e.g. documentation.html#proxmox */
   window.addEventListener('DOMContentLoaded', function() {
     var hash = window.location.hash.replace('#','');
-    var valid = ['proxmox','ubuntu','windows','ad','network','raspi','kali','siem'];
+    var valid = ['proxmox','ubuntu','windows','ad','network','raspi','kali','siem','incidents','sops'];
     if (hash && valid.indexOf(hash) !== -1) showDoc(hash);
   });
 </script>

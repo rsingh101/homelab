@@ -48,6 +48,10 @@
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="2" x2="12" y2="6"/><line x1="12" y1="18" x2="12" y2="22"/><circle cx="12" cy="12" r="4"/><line x1="4.93" y1="4.93" x2="7.76" y2="7.76"/><line x1="16.24" y1="16.24" x2="19.07" y2="19.07"/></svg>
         Build Timeline
       </a>
+      <a href="mailto:ranaveer.singh.cyber@gmail.com?subject=Resume%20Request%20%E2%80%94%20Homelab%20Portfolio&body=Hi%20Ranaveer%2C%0A%0AI%20came%20across%20your%20homelab%20portfolio%20and%20would%20like%20to%20request%20a%20copy%20of%20your%20resume.%0A%0AName%3A%20%5BYour%20Name%5D%0ACompany%3A%20%5BYour%20Company%5D%0ARole%20of%20interest%3A%20%5BRole%5D%0A%0AThank%20you" class="btn btn-resume">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+        Request Resume
+      </a>
     </div>
   </div>
 
@@ -205,56 +209,97 @@
       </div>
     </div>
 
-    <!-- SYSTEM STATUS -->
-    <div class="card">
-      <div class="card-title">System Status</div>
-      <ul class="status-list">
-        <li class="status-item">
-          <span class="dot dot-green"></span>
-          <span class="status-label">Proxmox Hypervisor</span>
-          <span class="status-val online">Online</span>
-        </li>
-        <li class="status-item">
-          <span class="dot dot-green"></span>
-          <span class="status-label">Pi 3B — WAN Bridge</span>
-          <span class="status-val online">Online</span>
-        </li>
-        <li class="status-item">
-          <span class="dot dot-green"></span>
-          <span class="status-label">Pi 4 — Suricata IDS</span>
-          <span class="status-val online">Online</span>
-        </li>
-        <li class="status-item">
-          <span class="dot dot-green"></span>
-          <span class="status-label">Pi 4 — Cowrie Honeypot</span>
-          <span class="status-val online">Online</span>
-        </li>
-        <li class="status-item">
-          <span class="dot dot-green"></span>
-          <span class="status-label">Ubuntu SOC Server VM</span>
-          <span class="status-val online">Online</span>
-        </li>
-        <li class="status-item">
-          <span class="dot dot-orange"></span>
-          <span class="status-label">Windows 11 VM</span>
-          <span class="status-val inprogress">In Progress</span>
-        </li>
-        <li class="status-item">
-          <span class="dot dot-gray"></span>
-          <span class="status-label">Win Server — Active Directory</span>
-          <span class="status-val planned">Pending</span>
-        </li>
-        <li class="status-item">
-          <span class="dot dot-gray"></span>
-          <span class="status-label">Kali Linux — Attacker VM</span>
-          <span class="status-val planned">Pending</span>
-        </li>
-        <li class="status-item">
-          <span class="dot dot-gray"></span>
-          <span class="status-label">SIEM Integration (Wazuh + Elastic)</span>
-          <span class="status-val planned">Planned</span>
-        </li>
-      </ul>
+    <!-- ASSET INVENTORY TABLE -->
+    <div class="card card-full">
+      <div class="card-title">Asset Inventory</div>
+      <div class="asset-table-wrap">
+        <table class="asset-table">
+          <thead>
+            <tr>
+              <th>Asset</th>
+              <th>Role</th>
+              <th>OS / Platform</th>
+              <th>Resources</th>
+              <th>IP</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="asset-name"><span class="asset-dot dot-green"></span>Mac Mini</td>
+              <td>Proxmox Hypervisor</td>
+              <td>Proxmox VE 8.x</td>
+              <td>32GB RAM · i5 8th · 512GB SSD</td>
+              <td>192.168.50.x</td>
+              <td><span class="tag tag-green">Online</span></td>
+            </tr>
+            <tr>
+              <td class="asset-name"><span class="asset-dot dot-green"></span>Raspberry Pi 3B</td>
+              <td>WAN Bridge / Firewall</td>
+              <td>Raspberry Pi OS Lite</td>
+              <td>1GB RAM · 4-core ARM</td>
+              <td>wlan0: 10.0.0.16</td>
+              <td><span class="tag tag-green">Online</span></td>
+            </tr>
+            <tr>
+              <td class="asset-name"><span class="asset-dot dot-green"></span>ASUS RT-AX88U</td>
+              <td>Lab Router / Gateway</td>
+              <td>ASUSWRT Firmware</td>
+              <td>—</td>
+              <td>LAN: 192.168.50.1</td>
+              <td><span class="tag tag-green">Online</span></td>
+            </tr>
+            <tr>
+              <td class="asset-name"><span class="asset-dot dot-green"></span>Raspberry Pi 4</td>
+              <td>Suricata IDS Sensor</td>
+              <td>Raspberry Pi OS Lite</td>
+              <td>4GB RAM · 4-core ARM</td>
+              <td>192.168.50.x</td>
+              <td><span class="tag tag-green">Online</span></td>
+            </tr>
+            <tr>
+              <td class="asset-name"><span class="asset-dot dot-green"></span>Raspberry Pi 4</td>
+              <td>Cowrie Honeypot</td>
+              <td>Raspberry Pi OS Lite</td>
+              <td>4GB RAM · 4-core ARM</td>
+              <td>192.168.50.x</td>
+              <td><span class="tag tag-green">Online</span></td>
+            </tr>
+            <tr>
+              <td class="asset-name"><span class="asset-dot dot-green"></span>Ubuntu SOC VM</td>
+              <td>SOC Backbone / SIEM Host</td>
+              <td>Ubuntu Server 22.04 LTS</td>
+              <td>8GB RAM · 4 vCPU</td>
+              <td>10.10.10.10</td>
+              <td><span class="tag tag-green">Online</span></td>
+            </tr>
+            <tr>
+              <td class="asset-name"><span class="asset-dot dot-orange"></span>Windows 11 VM</td>
+              <td>Endpoint / Sysmon Agent</td>
+              <td>Windows 11 Pro</td>
+              <td>4GB RAM · 2 vCPU</td>
+              <td>10.10.10.20</td>
+              <td><span class="tag tag-orange">In Progress</span></td>
+            </tr>
+            <tr>
+              <td class="asset-name"><span class="asset-dot dot-gray"></span>Windows Server VM</td>
+              <td>Active Directory DC</td>
+              <td>Windows Server 2022</td>
+              <td>4GB RAM · 2 vCPU</td>
+              <td>10.10.10.30</td>
+              <td><span class="tag tag-gray">Pending</span></td>
+            </tr>
+            <tr>
+              <td class="asset-name"><span class="asset-dot dot-gray"></span>Kali Linux VM</td>
+              <td>Attacker / Red Team</td>
+              <td>Kali Linux Rolling</td>
+              <td>4GB RAM · 2 vCPU</td>
+              <td>Isolated subnet</td>
+              <td><span class="tag tag-gray">Pending</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
 
     <!-- DOCUMENTATION LINKS -->
@@ -268,6 +313,62 @@
         <li class="doc-link-item"><a href="documentation.html#network">Network Architecture</a></li>
         <li class="doc-link-item"><a href="documentation.html#siem">SIEM &amp; Detection Engineering</a></li>
       </ul>
+    </div>
+  </div>
+
+  <!-- WHAT I CAN DO -->
+  <div class="value-section">
+    <div class="section-label">What I Can Do For Your Team</div>
+    <div class="value-grid">
+
+      <div class="value-card">
+        <div class="value-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+        </div>
+        <div class="value-title">Virtualisation & Infrastructure</div>
+        <div class="value-body">Provision, configure, and manage VMs on Proxmox. Comfortable with VM lifecycle, storage pools, network bridges, and resource allocation — skills that map directly to day-to-day sysadmin responsibilities.</div>
+      </div>
+
+      <div class="value-card">
+        <div class="value-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        </div>
+        <div class="value-title">Network Segmentation & Security</div>
+        <div class="value-body">Designed and validated a double-NAT isolated lab network from scratch using Linux iptables, DHCP, and firewall rules. Understand how traffic flows, where to inspect it, and how to block what shouldn't move.</div>
+      </div>
+
+      <div class="value-card">
+        <div class="value-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        </div>
+        <div class="value-title">Troubleshooting & Root Cause Analysis</div>
+        <div class="value-body">Hit real problems building this lab — DHCP failures, Python version conflicts, interface binding errors — and resolved each one methodically. Comfortable working through unfamiliar errors using logs, packet captures, and documentation.</div>
+      </div>
+
+      <div class="value-card">
+        <div class="value-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+        </div>
+        <div class="value-title">Documentation & Knowledge Management</div>
+        <div class="value-body">Every phase of this lab is documented with purpose, architecture, steps, config snippets, and lessons learned — the same standard used in MSP and enterprise IT teams. Can produce runbooks, SOPs, and incident reports that other engineers can actually follow.</div>
+      </div>
+
+      <div class="value-card">
+        <div class="value-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+        </div>
+        <div class="value-title">Security Monitoring & Detection</div>
+        <div class="value-body">Running Suricata IDS and Cowrie honeypot capturing real network events and attacker behaviour. Building toward a full Wazuh + Elastic SIEM pipeline with MITRE ATT&CK-mapped detection rules — gives security context that most IT support candidates don't have.</div>
+      </div>
+
+      <div class="value-card">
+        <div class="value-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        </div>
+        <div class="value-title">End-User Support & Communication</div>
+        <div class="value-body">3+ years supporting users across Windows, macOS, Microsoft 365, and mobile environments at Geek Squad and InTouchcx. Strong at translating technical issues into plain language — both for end users and for escalation notes to Tier 2 teams.</div>
+      </div>
+
     </div>
   </div>
 

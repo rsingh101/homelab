@@ -946,4 +946,322 @@
     .hero h1 { font-size: 28px; }
     .nav-logo { font-size: 10px; }
   }
+
+
+/* ─── REQUEST RESUME BUTTON ─── */
+.btn-resume {
+  background: transparent;
+  color: var(--green);
+  border: 1px solid var(--green);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 14px 28px;
+  cursor: pointer;
+  text-decoration: none;
+  transition: all 0.2s;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+.btn-resume:hover {
+  background: rgba(57,211,83,0.1);
+  box-shadow: 0 0 20px rgba(57,211,83,0.25);
+  transform: translateY(-1px);
+}
+
+/* ─── ASSET INVENTORY TABLE ─── */
+.asset-table-wrap {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+.asset-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12px;
+  min-width: 640px;
+}
+.asset-table thead tr {
+  border-bottom: 1px solid var(--border);
+}
+.asset-table th {
+  text-align: left;
+  padding: 10px 14px;
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text3);
+  font-weight: 500;
+  white-space: nowrap;
+}
+.asset-table td {
+  padding: 12px 14px;
+  color: var(--text2);
+  border-bottom: 1px solid var(--border);
+  font-size: 12px;
+}
+.asset-table tbody tr:last-child td { border-bottom: none; }
+.asset-table tbody tr:hover { background: rgba(0,212,255,0.03); }
+.asset-name {
+  color: var(--text) !important;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  white-space: nowrap;
+}
+.asset-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  display: inline-block;
+}
+
+/* ─── WHAT I CAN DO SECTION ─── */
+.value-section {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 80px 60px;
+}
+.value-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin-top: 20px;
+}
+.value-card {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  padding: 24px 22px;
+  transition: border-color 0.2s, transform 0.2s;
+}
+.value-card:hover {
+  border-color: var(--accent);
+  transform: translateY(-2px);
+}
+.value-icon {
+  color: var(--accent);
+  margin-bottom: 14px;
+}
+.value-title {
+  font-family: var(--font-display);
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--white);
+  margin-bottom: 10px;
+  letter-spacing: 0.02em;
+}
+.value-body {
+  font-size: 12px;
+  color: var(--text2);
+  line-height: 1.75;
+  font-weight: 300;
+}
+
+/* ─── INCIDENT REPORTS ─── */
+.incident-card {
+  border: 1px solid var(--border);
+  margin-bottom: 28px;
+  background: var(--bg2);
+}
+.incident-header {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--border);
+  flex-wrap: wrap;
+}
+.incident-id {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--accent);
+  letter-spacing: 0.1em;
+  background: var(--accent-dim);
+  padding: 3px 10px;
+  flex-shrink: 0;
+}
+.incident-title {
+  font-family: var(--font-display);
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--white);
+  flex: 1;
+}
+.incident-body {
+  padding: 0;
+}
+.ir-row {
+  display: grid;
+  grid-template-columns: 110px 1fr;
+  border-bottom: 1px solid var(--border);
+}
+.ir-row:last-child { border-bottom: none; }
+.ir-label {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text3);
+  padding: 14px 20px;
+  border-right: 1px solid var(--border);
+  display: flex;
+  align-items: flex-start;
+  padding-top: 16px;
+}
+.ir-content {
+  font-size: 12px;
+  color: var(--text2);
+  padding: 14px 20px;
+  line-height: 1.75;
+  font-weight: 300;
+}
+
+/* ─── SOPs ─── */
+.sop-card {
+  border: 1px solid var(--border);
+  margin-bottom: 24px;
+  background: var(--bg2);
+}
+.sop-header {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--border);
+}
+.sop-id {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--orange);
+  letter-spacing: 0.1em;
+  background: rgba(240,136,62,0.1);
+  padding: 3px 10px;
+  flex-shrink: 0;
+}
+.sop-title {
+  font-family: var(--font-display);
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--white);
+}
+.sop-body {
+  padding: 18px 20px;
+}
+.sop-meta {
+  font-size: 11px;
+  color: var(--text3);
+  letter-spacing: 0.06em;
+  margin-bottom: 14px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--border);
+}
+.sop-steps {
+  padding-left: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.sop-steps li {
+  font-size: 12px;
+  color: var(--text2);
+  line-height: 1.7;
+  font-weight: 300;
+}
+.sop-steps li::marker { color: var(--accent); font-weight: 700; }
+.sop-steps code {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  background: var(--bg);
+  color: var(--accent);
+  padding: 1px 6px;
+  border: 1px solid var(--border);
+}
+
+/* ─── TIMELINE VIEW TOGGLE ─── */
+.tl-view-toggle {
+  display: flex;
+  gap: 8px;
+  margin-top: 20px;
+}
+.tl-toggle-btn {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 8px 16px;
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--text2);
+  cursor: pointer;
+  transition: all 0.15s;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+.tl-toggle-btn:hover { border-color: var(--accent); color: var(--accent); }
+.tl-toggle-btn.active {
+  background: var(--accent-dim);
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+/* ─── ROADMAP TABLE ─── */
+.roadmap-table-wrap {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  margin-top: 32px;
+}
+.roadmap-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12px;
+  min-width: 580px;
+}
+.roadmap-table th {
+  text-align: left;
+  padding: 10px 16px;
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text3);
+  border-bottom: 1px solid var(--border);
+  font-weight: 500;
+}
+.roadmap-table td {
+  padding: 11px 16px;
+  color: var(--text2);
+  border-bottom: 1px solid var(--border);
+}
+.roadmap-table td:first-child {
+  color: var(--text3);
+  font-family: var(--font-mono);
+  font-size: 11px;
+}
+.roadmap-table td:nth-child(2) { color: var(--text); font-weight: 500; }
+.roadmap-table tbody tr:hover { background: rgba(0,212,255,0.03); }
+.roadmap-table tbody tr:last-child td { border-bottom: none; }
+
+/* ─── RESPONSIVE — NEW SECTIONS ─── */
+@media (max-width: 900px) {
+  .value-grid { grid-template-columns: 1fr 1fr; }
+  .value-section { padding: 0 24px 48px; }
+}
+@media (max-width: 600px) {
+  .value-grid { grid-template-columns: 1fr; }
+  .value-section { padding: 0 16px 40px; }
+  .ir-row { grid-template-columns: 1fr; }
+  .ir-label { border-right: none; border-bottom: 1px solid var(--border); padding: 10px 16px 6px; }
+  .ir-content { padding: 8px 16px 14px; }
+  .incident-header { gap: 10px; }
+  .sop-header { flex-wrap: wrap; }
+  .tl-view-toggle { flex-wrap: wrap; }
+}
+
 </style>
