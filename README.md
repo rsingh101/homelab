@@ -46,8 +46,8 @@ Eight technical doc pages accessible via a sidebar:
 
 | Page | Status |
 |---|---|
-| Proxmox Configuration | ✅ Complete |
-| Ubuntu Server Setup | ✅ Complete |
+| Proxmox Configuration | 🟠 In Progress  |
+| Ubuntu Server Setup | 🟠 In Progress  |
 | Windows 11 Deployment | 🟠 In Progress |
 | Active Directory Integration | ⧖ Pending |
 | Network Segmentation & Routing | ✅ Complete |
