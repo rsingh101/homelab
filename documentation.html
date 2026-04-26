@@ -49,9 +49,15 @@
           <div class="doc-breadcrumb">Documentation / Virtualization</div>
           <div class="doc-title">Proxmox Configuration</div>
           <div class="doc-meta">
-            <span>✓ Completed</span>
+            <span class="tag tag-orange">Rebuilding</span>
             <span>Category: Virtualization</span>
-            <span>Updated: March 2026</span>
+            <span>Updated: April 2026</span>
+          </div>
+        </div>
+
+        <div class="doc-section">
+          <div class="info-box" style="border-color:rgba(240,136,62,0.35); background:rgba(240,136,62,0.06);">
+            <span style="color:var(--orange)">⚠</span>&nbsp; <strong style="color:var(--orange)">Active Rebuild — April 2026:</strong>&nbsp; Proxmox VE is being reinstalled with an ext4 storage backend to resolve an LVM-thin incompatibility with the Apple SSD's 4Kn physical sector alignment. The architecture, network bridge configuration, and VM layout below are finalized and validated — only the physical reinstall is pending. All VMs will be redeployed against this same design once the host is back online.
           </div>
         </div>
 
@@ -64,10 +70,10 @@
           <h3>Architecture</h3>
           <table class="spec-table">
             <tr><th>Component</th><th>Detail</th><th>Status</th></tr>
-            <tr><td>Hypervisor</td><td>Proxmox VE (KVM-based)</td><td><span class="tag tag-green">Online</span></td></tr>
-            <tr><td>Storage Pool</td><td>Local LVM + ZFS</td><td><span class="tag tag-green">Online</span></td></tr>
-            <tr><td>Network Bridge</td><td>vmbr0 (LAN), vmbr1 (isolated SOC)</td><td><span class="tag tag-green">Online</span></td></tr>
-            <tr><td>VM Count</td><td>4 active VMs</td><td><span class="tag tag-blue">Running</span></td></tr>
+            <tr><td>Hypervisor</td><td>Proxmox VE (KVM-based)</td><td><span class="tag tag-orange">Reinstalling</span></td></tr>
+            <tr><td>Storage Pool</td><td>Local ext4 (replacing LVM-thin — 4Kn incompatibility resolved)</td><td><span class="tag tag-orange">Reconfiguring</span></td></tr>
+            <tr><td>Network Bridge</td><td>vmbr0 (LAN), vmbr1 (isolated SOC)</td><td><span class="tag tag-orange">Pending Restore</span></td></tr>
+            <tr><td>VM Count</td><td>0 active — pending reinstall</td><td><span class="tag tag-orange">Rebuilding</span></td></tr>
           </table>
         </div>
 
@@ -99,6 +105,7 @@ iface vmbr1 inet static
         <div class="doc-section">
           <h3>Lessons Learned</h3>
           <p>Properly planning network bridge topology before deploying VMs saves significant reconfiguration effort. The isolated <code>vmbr1</code> bridge is critical for ensuring SOC telemetry doesn't leak onto the production LAN. Always allocate more RAM than initially estimated — SIEM workloads are memory intensive.</p>
+          <p>Apple SSDs use 4Kn (4096-byte physical sector) alignment, which is incompatible with Proxmox's default LVM-thin provisioning. This manifested as storage pool creation failures during reinstall. Resolution: select the <strong>ext4</strong> directory-based storage backend during Proxmox install rather than LVM-thin. This is now the validated storage path for this hardware configuration.</p>
           <div class="info-box">Proxmox's web UI provides adequate management for this lab scale, but consider Terraform + Proxmox provider for future automated VM provisioning as the lab expands.</div>
         </div>
       </div>
@@ -109,9 +116,14 @@ iface vmbr1 inet static
           <div class="doc-breadcrumb">Documentation / SOC Infrastructure</div>
           <div class="doc-title">Ubuntu Server Setup</div>
           <div class="doc-meta">
-            <span>✓ Completed</span>
+            <span class="tag tag-orange">Pending Rebuild</span>
             <span>Category: SOC Backbone</span>
-            <span>Updated: March 2026</span>
+            <span>Updated: April 2026</span>
+          </div>
+        </div>
+        <div class="doc-section">
+          <div class="info-box" style="border-color:rgba(240,136,62,0.35); background:rgba(240,136,62,0.06);">
+            <span style="color:var(--orange)">⚠</span>&nbsp; <strong style="color:var(--orange)">Pending Rebuild — April 2026:</strong>&nbsp; VM 100 (Ubuntu SOC Server) is queued for redeployment following the Proxmox storage reconfiguration. Architecture, firewall baseline, and NTP configuration are validated and documented below — redeployment will follow the same spec against the reinstalled Proxmox host.
           </div>
         </div>
         <div class="doc-section">
@@ -122,10 +134,10 @@ iface vmbr1 inet static
           <h3>Architecture</h3>
           <table class="spec-table">
             <tr><th>Component</th><th>Detail</th><th>Status</th></tr>
-            <tr><td>OS</td><td>Ubuntu Server 22.04 LTS</td><td><span class="tag tag-green">Online</span></td></tr>
-            <tr><td>vCPUs</td><td>4 cores</td><td><span class="tag tag-green">Running</span></td></tr>
-            <tr><td>RAM</td><td>8 GB</td><td><span class="tag tag-green">Running</span></td></tr>
-            <tr><td>Network</td><td>vmbr1 (10.10.10.10)</td><td><span class="tag tag-green">Online</span></td></tr>
+            <tr><td>OS</td><td>Ubuntu Server 22.04 LTS</td><td><span class="tag tag-orange">Pending Rebuild</span></td></tr>
+            <tr><td>vCPUs</td><td>4 cores</td><td><span class="tag tag-orange">Pending Rebuild</span></td></tr>
+            <tr><td>RAM</td><td>8 GB</td><td><span class="tag tag-orange">Pending Rebuild</span></td></tr>
+            <tr><td>Network</td><td>vmbr1 (10.10.10.10)</td><td><span class="tag tag-orange">Pending Rebuild</span></td></tr>
             <tr><td>Wazuh Manager</td><td>Planned deployment</td><td><span class="tag tag-gray">Planned</span></td></tr>
           </table>
         </div>
@@ -156,9 +168,14 @@ iface vmbr1 inet static
           <div class="doc-breadcrumb">Documentation / Endpoints</div>
           <div class="doc-title">Windows 11 Deployment</div>
           <div class="doc-meta">
-            <span class="tag tag-orange">In Progress</span>
+            <span class="tag tag-orange">Pending Rebuild</span>
             <span>Category: Endpoint Telemetry</span>
-            <span>Updated: March 2026</span>
+            <span>Updated: April 2026</span>
+          </div>
+        </div>
+        <div class="doc-section">
+          <div class="info-box" style="border-color:rgba(240,136,62,0.35); background:rgba(240,136,62,0.06);">
+            <span style="color:var(--orange)">⚠</span>&nbsp; <strong style="color:var(--orange)">Pending Rebuild — April 2026:</strong>&nbsp; VM 101 (Windows 11 Endpoint) is queued for redeployment following the Proxmox storage reconfiguration. Sysmon configuration, event ID targeting, and domain join sequence are validated and documented below — redeployment proceeds once Proxmox and the Ubuntu SOC VM are back online.
           </div>
         </div>
         <div class="doc-section">
@@ -169,8 +186,8 @@ iface vmbr1 inet static
           <h3>Architecture</h3>
           <table class="spec-table">
             <tr><th>Component</th><th>Detail</th><th>Status</th></tr>
-            <tr><td>OS</td><td>Windows 11 Pro (x2 VMs)</td><td><span class="tag tag-orange">In Progress</span></td></tr>
-            <tr><td>Sysmon</td><td>SwiftOnSecurity config</td><td><span class="tag tag-orange">Configuring</span></td></tr>
+            <tr><td>OS</td><td>Windows 11 Pro (x2 VMs)</td><td><span class="tag tag-orange">Pending Rebuild</span></td></tr>
+            <tr><td>Sysmon</td><td>SwiftOnSecurity config</td><td><span class="tag tag-orange">Pending Rebuild</span></td></tr>
             <tr><td>Domain Join</td><td>lab.local</td><td><span class="tag tag-gray">Planned</span></td></tr>
             <tr><td>Wazuh Agent</td><td>v4.x</td><td><span class="tag tag-gray">Planned</span></td></tr>
           </table>
@@ -206,23 +223,25 @@ iface vmbr1 inet static
           <div class="doc-breadcrumb">Documentation / Identity</div>
           <div class="doc-title">Active Directory Integration</div>
           <div class="doc-meta">
-            <span class="tag tag-gray" style="font-size:11px">⧖ Pending</span>
+            <span class="tag tag-orange">Pending Install</span>
             <span>Category: Identity &amp; Access</span>
-            <span>Updated: March 2026</span>
+            <span>Updated: April 2026</span>
           </div>
         </div>
         <div class="doc-section">
           <h3>Purpose</h3>
-          <p>Windows Server running Active Directory Domain Services (AD DS) will simulate an enterprise identity layer. Once deployed, it will enable realistic authentication event logging, Group Policy enforcement, and Kerberos-based attack simulation — all fundamental to SOC analyst training and detection engineering. This is the next major VM deployment milestone after Windows 11 is finalized.</p>
+          <p>Windows Server 2022 (VM 102) will be deployed as the SOC lab domain controller, serving as the authoritative DC, integrated DNS, and DHCP server for the <code>lab.local</code> domain. This consolidates identity, name resolution, and address management under a single managed node — consistent with enterprise AD deployments where the DC owns DNS and DHCP for its domain. Deployment is sequenced after Proxmox and the Ubuntu SOC VM are restored, as it depends on a stable vmbr1 subnet.</p>
         </div>
         <div class="doc-section">
           <h3>Planned Architecture</h3>
           <table class="spec-table">
             <tr><th>Component</th><th>Detail</th><th>Status</th></tr>
-            <tr><td>OS</td><td>Windows Server 2022</td><td><span class="tag tag-gray">Pending</span></td></tr>
-            <tr><td>Domain</td><td>lab.local</td><td><span class="tag tag-gray">Pending</span></td></tr>
-            <tr><td>Forest Functional Level</td><td>Windows Server 2016</td><td><span class="tag tag-gray">Pending</span></td></tr>
-            <tr><td>DNS</td><td>Integrated AD DNS</td><td><span class="tag tag-gray">Pending</span></td></tr>
+            <tr><td>OS</td><td>Windows Server 2022</td><td><span class="tag tag-orange">Pending Install</span></td></tr>
+            <tr><td>VM ID</td><td>VM 102</td><td><span class="tag tag-orange">Pending Install</span></td></tr>
+            <tr><td>Domain</td><td>lab.local</td><td><span class="tag tag-orange">Pending Install</span></td></tr>
+            <tr><td>Forest Functional Level</td><td>Windows Server 2016</td><td><span class="tag tag-orange">Pending Install</span></td></tr>
+            <tr><td>DNS</td><td>Integrated AD DNS — authoritative for lab.local</td><td><span class="tag tag-orange">Pending Install</span></td></tr>
+            <tr><td>DHCP</td><td>Windows DHCP Server — SOC subnet (10.10.10.0/24)</td><td><span class="tag tag-orange">Pending Install</span></td></tr>
           </table>
         </div>
         <div class="doc-section">
@@ -240,7 +259,7 @@ iface vmbr1 inet static
         </div>
         <div class="doc-section">
           <h3>Next Steps</h3>
-          <p>Active Directory is the next major pending milestone. Planned sequence: Windows 11 finalized → Windows Server 2022 promoted to DC → endpoints domain-joined → Wazuh agent deployed for AD event forwarding to the Ubuntu SOC VM.</p>
+          <p>Deployment sequence: Proxmox reinstalled with ext4 backend → Ubuntu SOC VM (VM 100) redeployed → Windows 11 (VM 101) redeployed → Windows Server 2022 (VM 102) promoted to DC with integrated DNS and DHCP → endpoints domain-joined → Wazuh agent deployed for AD event forwarding to the Ubuntu SOC VM. Architecture and audit policy configuration are finalized; this page will be updated with full deployment steps and lessons learned as each milestone completes.</p>
         </div>
       </div>
 

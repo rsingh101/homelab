@@ -58,8 +58,10 @@
             <tr><td>03</td><td>Cowrie Honeypot Deployment</td><td>Detection</td><td>Jan 2026</td><td><span class="tag tag-green">Completed</span></td></tr>
             <tr><td>04</td><td>Proxmox Hypervisor Setup</td><td>Infrastructure</td><td>Feb 2026</td><td><span class="tag tag-green">Completed</span></td></tr>
             <tr><td>05</td><td>Ubuntu SOC VM Deployment</td><td>Infrastructure</td><td>Feb 2026</td><td><span class="tag tag-green">Completed</span></td></tr>
-            <tr><td>06</td><td>Windows 11 VM + Sysmon</td><td>Endpoint</td><td>Mar 2026</td><td><span class="tag tag-orange">Active</span></td></tr>
-            <tr><td>07</td><td>Windows Server + Active Directory</td><td>Identity</td><td>Q2 2026</td><td><span class="tag tag-gray">Pending</span></td></tr>
+            <tr><td>04b</td><td>Proxmox Reinstall — ext4 Backend (4Kn SSD fix)</td><td>Infrastructure</td><td>Apr 2026</td><td><span class="tag tag-orange">Active</span></td></tr>
+            <tr><td>05b</td><td>Ubuntu SOC VM Rebuild (VM 100)</td><td>Infrastructure</td><td>Apr 2026</td><td><span class="tag tag-orange">Pending Rebuild</span></td></tr>
+            <tr><td>06</td><td>Windows 11 VM Rebuild + Sysmon (VM 101)</td><td>Endpoint</td><td>Apr 2026</td><td><span class="tag tag-orange">Pending Rebuild</span></td></tr>
+            <tr><td>07</td><td>Windows Server 2022 + Active Directory DC · DNS · DHCP (VM 102)</td><td>Identity</td><td>Q2 2026</td><td><span class="tag tag-orange">Pending Install</span></td></tr>
             <tr><td>08</td><td>Kali Linux Deployment</td><td>Red Team</td><td>Q2 2026</td><td><span class="tag tag-gray">Planned</span></td></tr>
             <tr><td>09</td><td>Wazuh Manager Integration</td><td>SIEM</td><td>Q2 2026</td><td><span class="tag tag-gray">Planned</span></td></tr>
             <tr><td>10</td><td>Elastic Stack + SIEM Dashboard</td><td>SIEM</td><td>Q2 2026</td><td><span class="tag tag-gray">Planned</span></td></tr>
@@ -119,18 +121,34 @@
 
       <div class="tl-item" style="animation-delay:0.3s">
         <div class="tl-dot tl-dot-orange"></div>
-        <div class="tl-date">Phase 06 · March 2026 — Ongoing</div>
-        <div class="tl-title">Windows 11 VM Creation + Sysmon</div>
-        <div class="tl-why">Deploying Windows 11 as a domain-joined endpoint VM with Sysmon configured for rich telemetry — process creation, network connections, DNS queries, and registry changes. These events are the raw material for detection engineering and will feed directly into the SIEM pipeline once integrated.</div>
-        <span class="tag tag-orange">In Progress</span>
+        <div class="tl-date">Phase 04b · April 2026 — Active</div>
+        <div class="tl-title">Proxmox Reinstall — Storage Reconfiguration</div>
+        <div class="tl-why">During routine lab expansion, Proxmox's LVM-thin storage pool failed to initialize correctly on the Apple SSD — traced to a 4Kn (4096-byte physical sector) alignment incompatibility with LVM-thin's metadata layer. Resolution: reinstall Proxmox VE selecting the ext4 directory-based storage backend, which has no 4Kn constraints. Architecture, network bridges, and VM configurations are fully designed and validated — this is a storage backend swap, not a design change. All VMs will be redeployed against the same spec once the host is restored.</div>
+        <span class="tag tag-orange">Active</span>
+      </div>
+
+      <div class="tl-item" style="animation-delay:0.32s">
+        <div class="tl-dot tl-dot-orange"></div>
+        <div class="tl-date">Phase 05b · April 2026 — Pending Rebuild</div>
+        <div class="tl-title">Ubuntu SOC VM Rebuild (VM 100)</div>
+        <div class="tl-why">Ubuntu Server 22.04 LTS SOC backbone (VM 100) will be redeployed immediately following the Proxmox reinstall. UFW baseline, static IP assignment, NTP synchronization, and firewall rules are documented and will be applied from the validated configuration — redeployment is procedural, not exploratory.</div>
+        <span class="tag tag-orange">Pending Rebuild</span>
+      </div>
+
+      <div class="tl-item" style="animation-delay:0.3s">
+        <div class="tl-dot tl-dot-orange"></div>
+        <div class="tl-date">Phase 06 · April 2026 — Pending Rebuild</div>
+        <div class="tl-title">Windows 11 VM Rebuild + Sysmon (VM 101)</div>
+        <div class="tl-why">Windows 11 endpoint VM (VM 101) will be redeployed post-Proxmox restore. Sysmon configuration with the SwiftOnSecurity base config is validated and ready to apply. Redeployment proceeds once the Ubuntu SOC VM is online and the vmbr1 SOC subnet is confirmed stable.</div>
+        <span class="tag tag-orange">Pending Rebuild</span>
       </div>
 
       <div class="tl-item" style="animation-delay:0.35s">
-        <div class="tl-dot tl-dot-gray"></div>
-        <div class="tl-date">Phase 07 · Q2 2026</div>
-        <div class="tl-title">Windows Server + Active Directory</div>
-        <div class="tl-why">Will deploy Windows Server 2022 as a domain controller for lab.local alongside the Windows 11 VM inside Proxmox. Active Directory will enable realistic authentication event logging, Group Policy enforcement, and Kerberos-based attack simulation — all fundamental to SOC analyst training.</div>
-        <span class="tag tag-gray">Pending</span>
+        <div class="tl-dot tl-dot-orange"></div>
+        <div class="tl-date">Phase 07 · Q2 2026 — Pending Install</div>
+        <div class="tl-title">Windows Server 2022 + Active Directory DC · DNS · DHCP (VM 102)</div>
+        <div class="tl-why">VM 102 will be deployed as the lab domain controller for lab.local, serving as DC, integrated DNS authoritative server, and DHCP server for the SOC subnet — consolidating identity and network services under a single managed node consistent with enterprise AD architecture. Audit policy configuration and event forwarding to Wazuh are fully planned. Deployment follows Windows 11 rebuild confirmation.</div>
+        <span class="tag tag-orange">Pending Install</span>
       </div>
 
       <div class="tl-item" style="animation-delay:0.4s">

@@ -155,23 +155,23 @@
           <line x1="692" y1="216" x2="590" y2="272" stroke="#39d353" stroke-width="1" stroke-dasharray="4,4" opacity="0.5" marker-end="url(#arrow-dim)"/>
 
           <!-- Proxmox host box (background) — wider to fit Kali -->
-          <rect x="270" y="245" width="620" height="100" rx="2" fill="#0a0e14" stroke="#1e2d3d" stroke-width="1" stroke-dasharray="3,5"/>
-          <text x="290" y="261" font-family="JetBrains Mono,monospace" font-size="8" fill="#243447" letter-spacing="1">PROXMOX VE — Mac Mini i5 · 32GB RAM · 512GB SSD</text>
+          <rect x="270" y="245" width="620" height="100" rx="2" fill="#0a0e14" stroke="#f0883e" stroke-width="1" stroke-dasharray="3,5"/>
+          <text x="290" y="261" font-family="JetBrains Mono,monospace" font-size="8" fill="#f0883e" letter-spacing="1">PROXMOX VE — Reinstalling · ext4 backend · Mac Mini i5 · 32GB RAM · 512GB SSD</text>
 
           <!-- Ubuntu SOC VM -->
-          <rect x="282" y="267" width="135" height="66" rx="2" fill="#0d1117" stroke="#00d4ff" stroke-width="1.5" filter="url(#glow-sm)"/>
+          <rect x="282" y="267" width="135" height="66" rx="2" fill="#0d1117" stroke="#f0883e" stroke-width="1.5"/>
           <text x="349" y="287" font-family="JetBrains Mono,monospace" font-size="10" fill="#e6edf3" font-weight="500" text-anchor="middle" letter-spacing="1">UBUNTU</text>
-          <text x="349" y="302" font-family="JetBrains Mono,monospace" font-size="8" fill="#00d4ff" text-anchor="middle">SOC SERVER</text>
+          <text x="349" y="302" font-family="JetBrains Mono,monospace" font-size="8" fill="#f0883e" text-anchor="middle">SOC SERVER</text>
           <text x="349" y="315" font-family="JetBrains Mono,monospace" font-size="8" fill="#4a5568" text-anchor="middle">Wazuh · Elastic (planned)</text>
-          <text x="349" y="328" font-family="JetBrains Mono,monospace" font-size="8" fill="#4a5568" text-anchor="middle">10.10.10.10</text>
-          <circle cx="300" cy="274" r="3" fill="#39d353" filter="url(#glow-sm)"/>
+          <text x="349" y="328" font-family="JetBrains Mono,monospace" font-size="8" fill="#f0883e" text-anchor="middle">Pending Rebuild</text>
+          <circle cx="300" cy="274" r="3" fill="#f0883e"/>
 
           <!-- Windows 11 VM -->
           <rect x="432" y="267" width="135" height="66" rx="2" fill="#0d1117" stroke="#f0883e" stroke-width="1.5"/>
           <text x="499" y="287" font-family="JetBrains Mono,monospace" font-size="10" fill="#e6edf3" font-weight="500" text-anchor="middle" letter-spacing="1">WINDOWS 11</text>
           <text x="499" y="302" font-family="JetBrains Mono,monospace" font-size="8" fill="#f0883e" text-anchor="middle">ENDPOINT VM</text>
           <text x="499" y="315" font-family="JetBrains Mono,monospace" font-size="8" fill="#4a5568" text-anchor="middle">Sysmon · Wazuh agent</text>
-          <text x="499" y="328" font-family="JetBrains Mono,monospace" font-size="8" fill="#4a5568" text-anchor="middle">In Progress</text>
+          <text x="499" y="328" font-family="JetBrains Mono,monospace" font-size="8" fill="#f0883e" text-anchor="middle">Pending Rebuild</text>
           <circle cx="450" cy="274" r="3" fill="#f0883e"/>
 
           <!-- Win Server AD (pending) — inside Proxmox box -->
@@ -226,12 +226,12 @@
           </thead>
           <tbody>
             <tr>
-              <td class="asset-name"><span class="asset-dot dot-green"></span>Mac Mini</td>
+              <td class="asset-name"><span class="asset-dot dot-orange"></span>Mac Mini</td>
               <td>Proxmox Hypervisor</td>
               <td>Proxmox VE 8.x</td>
               <td>32GB RAM · i5 8th · 512GB SSD</td>
               <td>192.168.50.x</td>
-              <td><span class="tag tag-green">Online</span></td>
+              <td><span class="tag tag-orange">Rebuilding</span></td>
             </tr>
             <tr>
               <td class="asset-name"><span class="asset-dot dot-green"></span>Raspberry Pi 3B</td>
@@ -266,12 +266,12 @@
               <td><span class="tag tag-green">Online</span></td>
             </tr>
             <tr>
-              <td class="asset-name"><span class="asset-dot dot-green"></span>Ubuntu SOC VM</td>
+              <td class="asset-name"><span class="asset-dot dot-orange"></span>Ubuntu SOC VM</td>
               <td>SOC Backbone / SIEM Host</td>
               <td>Ubuntu Server 22.04 LTS</td>
               <td>8GB RAM · 4 vCPU</td>
               <td>10.10.10.10</td>
-              <td><span class="tag tag-green">Online</span></td>
+              <td><span class="tag tag-orange">Pending Rebuild</span></td>
             </tr>
             <tr>
               <td class="asset-name"><span class="asset-dot dot-orange"></span>Windows 11 VM</td>
@@ -279,15 +279,15 @@
               <td>Windows 11 Pro</td>
               <td>4GB RAM · 2 vCPU</td>
               <td>10.10.10.20</td>
-              <td><span class="tag tag-orange">In Progress</span></td>
+              <td><span class="tag tag-orange">Pending Rebuild</span></td>
             </tr>
             <tr>
-              <td class="asset-name"><span class="asset-dot dot-gray"></span>Windows Server VM</td>
-              <td>Active Directory DC</td>
+              <td class="asset-name"><span class="asset-dot dot-orange"></span>Windows Server VM</td>
+              <td>Active Directory DC · DNS · DHCP</td>
               <td>Windows Server 2022</td>
               <td>4GB RAM · 2 vCPU</td>
               <td>10.10.10.30</td>
-              <td><span class="tag tag-gray">Pending</span></td>
+              <td><span class="tag tag-orange">Pending Install</span></td>
             </tr>
             <tr>
               <td class="asset-name"><span class="asset-dot dot-gray"></span>Kali Linux VM</td>
@@ -393,7 +393,7 @@
   </div>
 
   <div class="footer-bar">
-    <span>Last Update: <strong>March 2026</strong></span>
+    <span>Last Update: <strong>April 2026</strong></span>
     <span class="verified">● System Integrity: Verified</span>
     <span style="margin-left:auto; color: var(--text3)">Cybersecurity Homelab Engineer</span>
   </div>
